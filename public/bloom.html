@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom — Send Flowers</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f5f0e8;
+    --dark: #1c2626;
+    --mid: #5a5a52;
+    --light: #d8d2c4;
+  }
+
+  body {
+    background: radial-gradient(circle at top left, #fff9f2 0%, var(--cream) 45%, #e8e0d2 100%);
+    color: var(--dark);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+  }
+
+  @media (max-width: 700px) {
+    body {
+      align-items: flex-start;
+      padding: 32px 16px 0;
+    }
+  }
+
+  .page {
+    width: 100%;
+    max-width: 960px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 640px;
+    background: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(4px);
+  }
+
+  .bouquet-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 0 32px;
+    position: relative;
+  }
+
+  .bouquet-stage-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    position: relative;
+  }
+
+  .slider-btn {
+    width: 28px;
+    height: 44px;
+    border: none;
+    background: none;
+    color: var(--light);
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.15s, transform 0.12s;
+    flex-shrink: 0;
+    padding: 0;
+    line-height: 1;
+  }
+
+  .slider-btn:hover {
+    color: var(--dark);
+    transform: scale(1.15);
+  }
+
+  .slider-btn svg {
+    width: 14px;
+    height: 24px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .bouquet-stage {
+    width: 330px;
+    height: 456px;
+    flex-shrink: 0;
+    position: relative;
+    padding: 0 36px;
+  }
+
+  .bouquet-slide {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .bouquet-slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .bouquet-slide svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: contain;
+  }
+
+  .bouquet-name {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid);
+    text-align: center;
+    margin-top: 10px;
+    min-height: 14px;
+  }
+
+  .palette {
+    margin-top: 18px;
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .palette-row {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: nowrap;
+  }
+
+  .palette-divider {
+    width: 1px;
+    height: 44px;
+    background: var(--light);
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  .swatch-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+    position: relative;
+  }
+
+  .swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    padding: 0;
+    outline: none;
+  }
+
+  .swatch:hover {
+    transform: scale(1.15);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  }
+
+  .swatch.active {
+    border-color: var(--dark);
+    transform: scale(1.15);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  .swatch-label {
+    font-size: 9px;
+    font-weight: 500;
+    color: var(--mid);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .color-picker-wrap {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border-radius: 12px;
+    padding: 10px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    display: none;
+    z-index: 200;
+    flex-direction: column;
+    gap: 8px;
+    width: 196px;
+  }
+
+  .color-picker-wrap.open { display: flex; }
+
+  .preset-colors {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 5px;
+    padding: 2px 0;
+  }
+
+  .preset-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+  }
+
+  .preset-dot:hover {
+    transform: scale(1.25);
+    border-color: var(--dark);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  }
+
+  .form-panel {
+    border-left: 1px solid var(--light);
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .headline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    line-height: 1.15;
+    color: var(--dark);
+    margin-bottom: 8px;
+  }
+
+  .headline em { font-style: italic; font-weight: 400; }
+
+  .sub {
+    font-size: 13px;
+    color: var(--mid);
+    margin-bottom: 36px;
+    line-height: 1.6;
+  }
+
+  .field { margin-bottom: 20px; }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--mid);
+    margin-bottom: 8px;
+  }
+
+  input[type="text"], textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    border-bottom: 1.5px solid var(--light);
+    padding: 8px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--dark);
+    outline: none;
+    transition: border-color 0.2s ease;
+    resize: none;
+  }
+
+  input[type="text"]:focus, textarea:focus { border-bottom-color: var(--dark); }
+  input[type="text"]::placeholder, textarea::placeholder { color: var(--light); }
+  textarea { min-height: 80px; line-height: 1.6; overflow: hidden; }
+
+  .names-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .btn-send {
+    margin-top: 28px;
+    width: 100%;
+    background: var(--dark);
+    color: var(--cream);
+    border: none;
+    padding: 16px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+
+  .btn-send:hover { background: #2e3d3d; transform: translateY(-1px); }
+  .btn-send:active { transform: translateY(0); }
+
+  .success-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(245,240,232,0.96);
+    z-index: 300;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .success-overlay.show { display: flex; }
+  .success-icon { font-size: 48px; }
+
+  .success-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 28px;
+    font-weight: 300;
+    color: var(--dark);
+  }
+
+  .success-sub { font-size: 13px; color: var(--mid); }
+
+  .form-footer {
+    margin-top: 72px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: center;
+  }
+
+  .credit {
+    font-size: 11px;
+    color: var(--light);
+    letter-spacing: 0.04em;
+    text-align: center;
+  }
+
+  .credit a {
+    color: var(--mid);
+    text-decoration: none;
+    border-bottom: 1px solid var(--light);
+    padding-bottom: 1px;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .credit a:hover {
+    color: var(--dark);
+    border-color: var(--dark);
+  }
+
+  @media (max-width: 700px) {
+    .page { grid-template-columns: 1fr; margin-bottom: 0; padding-bottom: 0; }
+    .form-panel { border-left: none; border-top: 1px solid var(--light); padding: 32px 20px 0; margin-bottom: 0; }
+    .bouquet-stage { width: 260px; height: 380px; }
+    body { padding: 32px 16px 0; margin-bottom: 0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="bouquet-panel">
+    <div class="bouquet-stage-wrapper">
+      <button class="slider-btn" id="btnPrev" onclick="slide(-1)" aria-label="Previous bouquet">
+        <svg viewBox="0 0 14 24"><polyline points="12,2 2,12 12,22"/></svg>
+      </button>
+
+      <div class="bouquet-stage" id="bouquetStage">
+        <div class="bouquet-slide active" data-idx="0">
+          <svg id="classic_svg" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg">
+            <g id="wrapper">
+              <path d="M58 284 L262 284 L200 448 L120 448 Z" fill="#f5e1cb"/>
+            </g>
+            <rect x="154" y="196" width="12" height="140" rx="6" fill="#2c8237"/>
+            <g id="peony01">
+              <circle cx="120" cy="168" r="46" fill="#ffb3d9"/>
+              <circle cx="94" cy="156" r="18" fill="#ffb3d9"/>
+            </g>
+            <g id="peony02">
+              <circle cx="208" cy="160" r="44" fill="#ffb3d9"/>
+              <circle cx="228" cy="144" r="17" fill="#ffb3d9"/>
+            </g>
+            <g id="poppy01">
+              <circle cx="162" cy="112" r="42" fill="#ff0090"/>
+              <circle cx="162" cy="112" r="12" fill="#1c2626"/>
+            </g>
+            <g id="ribbon">
+              <path d="M132 338 C150 356 170 356 188 338 C186 370 178 392 160 414 C142 392 134 370 132 338 Z" fill="#8b3fc8"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="bouquet-slide" data-idx="1">
+          <svg id="tropical_svg" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg">
+            <g id="wrapper">
+              <path d="M58 284 L262 284 L205 448 L115 448 Z" fill="#ddd0c0"/>
+            </g>
+            <g id="leaf01"><ellipse cx="98" cy="220" rx="28" ry="84" fill="#2c8237" transform="rotate(-20 98 220)"/></g>
+            <g id="leaf02"><ellipse cx="222" cy="226" rx="28" ry="88" fill="#2c8237" transform="rotate(20 222 226)"/></g>
+            <g id="protea01"><circle cx="126" cy="150" r="36" fill="#ff7c2a"/></g>
+            <g id="ranunculus01"><circle cx="200" cy="140" r="34" fill="#ffb3d9"/></g>
+            <g id="freesia01"><circle cx="164" cy="104" r="30" fill="#ffe033"/></g>
+            <g id="ribbon">
+              <path d="M132 338 C150 356 170 356 188 338 C186 370 178 392 160 414 C142 392 134 370 132 338 Z" fill="#5e9ef4"/>
+            </g>
+          </svg>
+        </div>
+
+        <div class="bouquet-slide" data-idx="2">
+          <svg id="wildflowers_svg" viewBox="0 0 320 460" xmlns="http://www.w3.org/2000/svg">
+            <g id="marigold01"><circle cx="112" cy="144" r="32" fill="#ff7c2a"/></g>
+            <g id="snowdrop01"><circle cx="200" cy="136" r="30" fill="#ffe033"/></g>
+            <g id="gerbera01"><circle cx="160" cy="104" r="28" fill="#e8002a"/></g>
+            <g id="pansy01"><circle cx="142" cy="198" r="26" fill="#8b3fc8"/></g>
+            <g id="rudbeckia01"><circle cx="188" cy="194" r="24" fill="#ff4da6"/></g>
+            <g id="stems">
+              <rect x="102" y="210" width="8" height="170" rx="4" fill="#2c8237"/>
+              <rect x="154" y="130" width="8" height="250" rx="4" fill="#2c8237"/>
+              <rect x="206" y="202" width="8" height="178" rx="4" fill="#2c8237"/>
+            </g>
+            <g id="RIBBON">
+              <path d="M132 338 C150 356 170 356 188 338 C186 370 178 392 160 414 C142 392 134 370 132 338 Z" fill="#ffffff"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+
+      <button class="slider-btn" id="btnNext" onclick="slide(1)" aria-label="Next bouquet">
+        <svg viewBox="0 0 14 24"><polyline points="2,2 12,12 2,22"/></svg>
+      </button>
+    </div>
+
+    <div class="bouquet-name" id="bouquetName">Classic Bouquet</div>
+    <div class="palette" id="palette"></div>
+  </div>
+
+  <div class="form-panel">
+    <h1 class="headline">Send something <em>beautiful.</em></h1>
+    <p class="sub">Pick your colours, write your message, and we'll do the rest.</p>
+
+    <div class="field">
+      <label for="message">Your message</label>
+      <textarea id="message" placeholder="Write something from the heart..." maxlength="1000"></textarea>
+    </div>
+
+    <div class="names-row">
+      <div class="field">
+        <label for="fromName">From</label>
+        <input type="text" id="fromName" placeholder="Your name" />
+      </div>
+      <div class="field">
+        <label for="toName">To</label>
+        <input type="text" id="toName" placeholder="Their name" />
+      </div>
+    </div>
+
+    <button class="btn-send" onclick="sendBouquet()">Send Bouquet &rarr;</button>
+    <div class="form-footer">
+      <p class="credit">Built by <a href="https://matea.fyi" target="_blank" rel="noopener">Matea</a> from SunHouse studio</p>
+    </div>
+  </div>
+</div>
+
+<div class="success-overlay" id="successOverlay">
+  <div class="success-icon">&#127800;</div>
+  <div class="success-text" id="successText">Your bouquet is on its way.</div>
+  <div class="success-sub" id="successSub"></div>
+  <button onclick="resetForm()" style="margin-top:24px;background:none;border:1.5px solid #1c2626;padding:12px 28px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;">Send Another</button>
+</div>
+
+<script>
+const bouquets = [
+  {
+    id: 'classic',
+    name: 'Classic Bouquet',
+    colorGroups: [
+      { key: 'peony', ids: ['peony01','peony02'], color: '#ffb3d9', label: 'Peonies', type: 'flower' },
+      { key: 'poppy', ids: ['poppy01'], color: '#ff0090', label: 'Poppy', type: 'flower' },
+      { key: 'ribbon', ids: ['ribbon'], color: '#8b3fc8', label: 'Ribbon', type: 'utility' },
+      { key: 'wrapper', ids: ['wrapper'], color: '#f5e1cb', label: 'Wrapper', type: 'wrapper' }
+    ]
+  },
+  {
+    id: 'tropical',
+    name: 'Tropical Bouquet',
+    colorGroups: [
+      { key: 'protea', ids: ['protea01'], color: '#ff7c2a', label: 'Protea', type: 'flower' },
+      { key: 'ranunculus', ids: ['ranunculus01'], color: '#ffb3d9', label: 'Ranunculus', type: 'flower' },
+      { key: 'freesia', ids: ['freesia01'], color: '#ffe033', label: 'Freesia', type: 'flower' },
+      { key: 'ribbon', ids: ['ribbon'], color: '#5e9ef4', label: 'Ribbon', type: 'utility' },
+      { key: 'wrapper', ids: ['wrapper'], color: '#ddd0c0', label: 'Wrapper', type: 'wrapper' }
+    ]
+  },
+  {
+    id: 'wildflowers',
+    name: 'Wildflower Bouquet',
+    colorGroups: [
+      { key: 'marigold', ids: ['marigold01'], color: '#ff7c2a', label: 'Marigold', type: 'flower' },
+      { key: 'snowdrop', ids: ['snowdrop01'], color: '#ffe033', label: 'Snowdrop', type: 'flower' },
+      { key: 'gerbera', ids: ['gerbera01'], color: '#e8002a', label: 'Gerbera', type: 'flower' },
+      { key: 'pansy', ids: ['pansy01'], color: '#8b3fc8', label: 'Pansy', type: 'flower' },
+      { key: 'rudbeckia', ids: ['rudbeckia01'], color: '#ff4da6', label: 'Rudbeckia', type: 'flower' },
+      { key: 'ribbon', ids: ['RIBBON'], color: '#ffffff', label: 'Ribbon', type: 'utility' }
+    ]
+  }
+];
+
+const SPECTRUM = [
+  '#ffffff', '#ffe033', '#c8e800', '#00c9a7', '#ffd0a0', '#ff7c2a', '#ff6b6b', '#e8002a',
+  '#d4005a', '#ff0090', '#ff4da6', '#ffb3d9', '#c9a0e8', '#8b3fc8', '#5e9ef4', '#1a5fd4'
+];
+const WRAPPER_PALETTE = ['#c8b49a','#d4c8b4','#ddd0c0','#e8ddd0','#ece0d0','#f0ebe0','#f5e1cb','#ffffff'];
+const RIBBON_PALETTE = ['#ffffff','#ffb3d9','#ff4da6','#ff0090','#c9a0e8','#8b3fc8','#5e9ef4','#3a3a3a'];
+
+let currentIdx = 0;
+let openPicker = null;
+const total = bouquets.length;
+
+function applyColor(bouquetId, groupKey, color) {
+  const bouquet = bouquets.find(b => b.id === bouquetId);
+  if (!bouquet) return;
+  const group = bouquet.colorGroups.find(g => g.key === groupKey);
+  if (!group) return;
+  group.color = color;
+  const svgContainer = document.getElementById(bouquetId + '_svg');
+  const scope = svgContainer || document;
+  group.ids.forEach(id => {
+    const el = scope.querySelector('#' + id);
+    if (!el) return;
+    el.style.fill = color;
+  });
+  const swatch = document.getElementById('swatch-' + groupKey);
+  if (swatch) {
+    swatch.style.background = color;
+    swatch.style.boxShadow = color === '#ffffff' ? 'inset 0 0 0 1.5px #d8d2c4' : '';
+  }
+}
+
+function buildPalette(bouquetIdx) {
+  const bouquet = bouquets[bouquetIdx];
+  const paletteEl = document.getElementById('palette');
+  paletteEl.innerHTML = '';
+  if (openPicker) openPicker = null;
+
+  const flowers = bouquet.colorGroups.filter(g => g.type === 'flower');
+  const utility = bouquet.colorGroups.filter(g => g.type === 'utility' || g.type === 'wrapper');
+
+  const row1 = document.createElement('div');
+  row1.className = 'palette-row';
+  flowers.forEach(group => row1.appendChild(makeSwatch(bouquet, group)));
+  paletteEl.appendChild(row1);
+
+  if (utility.length > 0) {
+    const row2 = document.createElement('div');
+    row2.className = 'palette-row';
+
+    if (flowers.length > 6) {
+      const div = document.createElement('div');
+      div.className = 'palette-divider';
+      row2.appendChild(div);
+    }
+
+    utility.forEach(group => row2.appendChild(makeSwatch(bouquet, group)));
+    paletteEl.appendChild(row2);
+  }
+}
+
+function makeSwatch(bouquet, group) {
+  const swatchGroup = document.createElement('div');
+  swatchGroup.className = 'swatch-group';
+
+  const btn = document.createElement('button');
+  btn.className = 'swatch';
+  btn.id = 'swatch-' + group.key;
+  btn.style.background = group.color;
+  if (group.color === '#ffffff') btn.style.boxShadow = 'inset 0 0 0 1.5px #d8d2c4';
+  btn.setAttribute('aria-label', group.label + ' color');
+
+  const pickerWrap = document.createElement('div');
+  pickerWrap.className = 'color-picker-wrap';
+  pickerWrap.id = 'picker-' + group.key;
+
+  const presetsEl = document.createElement('div');
+  presetsEl.className = 'preset-colors';
+
+  let pal;
+  if (group.type === 'wrapper') pal = WRAPPER_PALETTE;
+  else if (group.type === 'utility') pal = RIBBON_PALETTE;
+  else pal = SPECTRUM;
+
+  pal.forEach(hex => {
+    const dot = document.createElement('div');
+    dot.className = 'preset-dot';
+    dot.style.background = hex;
+    if (hex === '#ffffff') dot.style.boxShadow = 'inset 0 0 0 1.5px #d8d2c4';
+    dot.title = hex;
+    dot.addEventListener('click', e => {
+      e.stopPropagation();
+      applyColor(bouquet.id, group.key, hex);
+      closePicker();
+    });
+    presetsEl.appendChild(dot);
+  });
+
+  pickerWrap.appendChild(presetsEl);
+  swatchGroup.appendChild(btn);
+  swatchGroup.appendChild(pickerWrap);
+
+  const label = document.createElement('span');
+  label.className = 'swatch-label';
+  label.textContent = group.label;
+  swatchGroup.appendChild(label);
+
+  btn.addEventListener('click', e => {
+    e.stopPropagation();
+    togglePicker(pickerWrap, btn);
+  });
+
+  return swatchGroup;
+}
+
+function togglePicker(pickerWrap, btn) {
+  if (openPicker && openPicker !== pickerWrap) closePicker();
+  if (pickerWrap.classList.contains('open')) {
+    closePicker();
+  } else {
+    pickerWrap.classList.add('open');
+    btn.classList.add('active');
+    openPicker = pickerWrap;
+  }
+}
+
+function closePicker() {
+  if (!openPicker) return;
+  const btn = openPicker.previousSibling;
+  if (btn) btn.classList.remove('active');
+  openPicker.classList.remove('open');
+  openPicker = null;
+}
+
+document.addEventListener('click', e => {
+  if (openPicker && !e.target.closest('.swatch-group')) closePicker();
+});
+
+function slide(dir) {
+  const slides = document.querySelectorAll('.bouquet-slide');
+  slides[currentIdx].classList.remove('active');
+  currentIdx = ((currentIdx + dir) % total + total) % total;
+  slides[currentIdx].classList.add('active');
+  document.getElementById('bouquetName').textContent = bouquets[currentIdx].name;
+  buildPalette(currentIdx);
+}
+
+(function() {
+  const stage = document.getElementById('bouquetStage');
+  let startX = 0;
+  let startY = 0;
+  let isDragging = false;
+
+  stage.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    isDragging = true;
+  }, { passive: true });
+
+  stage.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy)) e.preventDefault();
+  }, { passive: false });
+
+  stage.addEventListener('touchend', e => {
+    if (!isDragging) return;
+    isDragging = false;
+    const dx = e.changedTouches[0].clientX - startX;
+    const dy = e.changedTouches[0].clientY - startY;
+    if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) slide(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
+
+buildPalette(0);
+
+const msg = document.getElementById('message');
+msg.addEventListener('input', function() {
+  this.style.height = 'auto';
+  this.style.height = this.scrollHeight + 'px';
+});
+
+function sendBouquet() {
+  const from = document.getElementById('fromName').value.trim();
+  const to = document.getElementById('toName').value.trim();
+  if (!from || !to) {
+    alert('Please fill in your name and the recipient\'s name.');
+    return;
+  }
+  document.getElementById('successText').textContent = 'Your bouquet is on its way to ' + to + '.';
+  document.getElementById('successSub').textContent = 'With love, ' + from;
+  document.getElementById('successOverlay').classList.add('show');
+}
+
+function resetForm() {
+  document.getElementById('message').value = '';
+  document.getElementById('fromName').value = '';
+  document.getElementById('toName').value = '';
+  document.getElementById('successOverlay').classList.remove('show');
+}
+</script>
+
+</body>
+</html>
