@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bloom — Your Letter</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #f5f0e8;
+    --dark: #1c2626;
+    --mid: #5a5a52;
+    --light: #d8d2c4;
+    --pink-bg: #f9eef0;
+  }
+
+  body {
+    background: var(--pink-bg);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 24px;
+    gap: 28px;
+  }
+
+  /* ── Action bar ── */
+  .actions {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .btn {
+    background: var(--dark);
+    color: var(--cream);
+    border: none;
+    padding: 12px 24px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+  }
+  .btn:hover { background: #2e3d3d; transform: translateY(-1px); }
+  .btn:active { transform: translateY(0); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--mid);
+    border: none;
+    padding: 12px 16px;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 500;
+    border-bottom: 1px solid var(--light);
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .btn-ghost:hover { color: var(--dark); border-color: var(--dark); }
+
+  /* ── Postcard ── */
+  .postcard {
+    width: 100%;
+    max-width: 880px;
+    min-height: 460px;
+    background: var(--cream);
+    box-shadow:
+      0 2px 4px rgba(0,0,0,0.04),
+      0 8px 32px rgba(0,0,0,0.10),
+      0 24px 64px rgba(0,0,0,0.06);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    position: relative;
+  }
+
+  /* Torn/deckled edge between left and right */
+  .postcard::after {
+    content: '';
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    width: 1px;
+    background: repeating-linear-gradient(
+      to bottom,
+      var(--light) 0px,
+      var(--light) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+  }
+
+  /* ── Left: Bouquet ── */
+  .postcard-bouquet {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 24px;
+    position: relative;
+    background: var(--cream);
+  }
+
+  .postcard-bouquet svg {
+    width: 100%;
+    max-width: 320px;
+    height: auto;
+    display: block;
+  }
+
+  .bouquet-label {
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--light);
+    margin-top: 16px;
+  }
+
+  /* ── Right: Letter ── */
+  .postcard-letter {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 44px 44px 36px;
+    position: relative;
+    /* Ruled lines background — one line every 38px (matches line-height) */
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0px,
+      transparent 37px,
+      rgba(216,210,196,0.35) 37px,
+      rgba(216,210,196,0.35) 38px
+    );
+    background-position: 0 80px; /* offset so first line appears below the "For..." label */
+  }
+
+  /* Letter content */
+  .letter-body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .letter-to {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 13px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--mid);
+    font-weight: 400;
+  }
+
+  .letter-message {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    line-height: 1.727; /* ~38px at 22px font = aligns to ruled lines */
+    color: var(--dark);
+    font-style: italic;
+  }
+
+  .letter-footer {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .letter-from {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0;
+    line-height: 1.727; /* sits on the ruled lines just like the message */
+    margin-top: 38px; /* push down one full ruled line gap */
+  }
+
+  .letter-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--light);
+    font-style: italic;
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 640px) {
+    body { padding: 24px 16px 40px; }
+
+    .postcard {
+      grid-template-columns: 1fr;
+      max-width: 400px;
+      min-height: unset;
+    }
+
+    .postcard::after { display: none; }
+
+    .postcard-bouquet {
+      padding: 32px 24px 16px;
+      border-bottom: 1px dashed var(--light);
+    }
+
+    .postcard-letter {
+      padding: 32px 28px 32px;
+      gap: 28px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="actions">
+  <button class="btn-ghost" onclick="history.back()">
+    &#8592; Back
+  </button>
+  <button class="btn" onclick="copyLink()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+    Share
+  </button>
+  <button class="btn" onclick="downloadImage()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+    Save
+  </button>
+</div>
+
+<div class="postcard" id="postcard">
+
+  <!-- LEFT: Bouquet -->
+  <div class="postcard-bouquet">
+    <!--
+      BOUQUET SVG — injected server-side.
+
+      1. Read the correct file from /public based on order.bouquet_id:
+            classic.svg      → viewBox="0 0 1577.82 1703.53"
+            tropical.svg     → viewBox="0 0 1500 1500"
+            wildflowers.svg  → viewBox="0 0 1500 1500"
+
+      2. Parse the SVG, then for each entry in order.colors
+         (e.g. { marigold: "#ff7c2a", pansy: "#8b3fc8" }),
+         find the element by ID and set its style="fill: {hex}"
+         See full ID mapping in the Codex brief.
+
+      3. Render the modified SVG inline here, e.g.:
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 1500">
+              ...paths with updated fill colors...
+            </svg>
+    -->    <span class="bouquet-label">Wildflower Bouquet</span>
+  </div>
+
+  <!-- RIGHT: Letter -->
+  <div class="postcard-letter">
+
+    <div class="letter-body">
+      <div class="letter-to">For Sofia</div>
+      <div class="letter-message">Wishing you a day as beautiful as you are. Thinking of you with so much warmth.</div>
+    </div>
+
+    <div class="letter-footer">
+      <div class="letter-from">
+        <span>With love, Matea</span>
+        <span class="letter-brand">Bloom</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href)
+    .then(() => alert('Link copied!'))
+    .catch(() => {});
+}
+
+async function downloadImage() {
+  if (!window.html2canvas) {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    document.head.appendChild(s);
+    await new Promise(r => s.onload = r);
+  }
+  const canvas = await html2canvas(document.getElementById('postcard'), {
+    scale: 2, backgroundColor: null, useCORS: true, logging: false
+  });
+  const a = document.createElement('a');
+  a.download = 'bloom-letter.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+</script>
+</body>
+</html>
