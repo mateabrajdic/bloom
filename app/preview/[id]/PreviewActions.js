@@ -1,5 +1,16 @@
 "use client";
 
+import { useEffect, useState } from "react";
+
+const DEFAULT_BACKGROUND = "#f9eef0";
+const BACKGROUND_SWATCHES = [
+  "#f9eef0",
+  "#f5f0e8",
+  "#f6d7de",
+  "#dfe8f3",
+  "#e2eee3",
+];
+
 async function ensureHtml2Canvas() {
   if (window.html2canvas) return window.html2canvas;
 
@@ -14,6 +25,18 @@ async function ensureHtml2Canvas() {
 }
 
 export default function PreviewActions() {
+  const [backgroundColor, setBackgroundColor] = useState(DEFAULT_BACKGROUND);
+
+  useEffect(() => {
+    document.documentElement.style.setProperty("--pink-bg", backgroundColor);
+  }, [backgroundColor]);
+
+  useEffect(() => {
+    return () => {
+      document.documentElement.style.removeProperty("--pink-bg");
+    };
+  }, []);
+
   async function copyLink() {
     navigator.clipboard
       .writeText(window.location.href)
@@ -23,57 +46,112 @@ export default function PreviewActions() {
 
   async function downloadImage() {
     const html2canvas = await ensureHtml2Canvas();
-    const canvas = await html2canvas(document.getElementById("postcard"), {
-      scale: 2,
-      backgroundColor: null,
-      useCORS: true,
-      logging: false,
-    });
+    const postcard = document.getElementById("postcard");
+    if (!postcard) return;
+
+    const rect = postcard.getBoundingClientRect();
+    const padding = 56;
+    const side = Math.ceil(Math.max(rect.width, rect.height) + padding * 2);
+    const exportFrame = document.createElement("div");
+
+    exportFrame.style.position = "fixed";
+    exportFrame.style.left = "-99999px";
+    exportFrame.style.top = "0";
+    exportFrame.style.width = `${side}px`;
+    exportFrame.style.height = `${side}px`;
+    exportFrame.style.display = "flex";
+    exportFrame.style.alignItems = "center";
+    exportFrame.style.justifyContent = "center";
+    exportFrame.style.background = backgroundColor;
+    exportFrame.style.padding = `${padding}px`;
+    exportFrame.style.boxSizing = "border-box";
+
+    const postcardClone = postcard.cloneNode(true);
+    postcardClone.removeAttribute("id");
+    exportFrame.appendChild(postcardClone);
+    document.body.appendChild(exportFrame);
+
+    let canvas;
+    try {
+      canvas = await html2canvas(exportFrame, {
+        scale: 2,
+        backgroundColor: null,
+        useCORS: true,
+        logging: false,
+      });
+    } finally {
+      document.body.removeChild(exportFrame);
+    }
 
     const link = document.createElement("a");
-    link.download = "bloom-letter.png";
+    link.download = "petalpost-letter.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
   }
 
   return (
-    <div className="actions">
-      <button className="btn-ghost" onClick={() => window.history.back()}>
-        {"\u2190"} Back
-      </button>
-      <button className="btn" onClick={copyLink}>
-        <svg
-          width="13"
-          height="13"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
-          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
-        </svg>
-        Share
-      </button>
-      <button className="btn" onClick={downloadImage}>
-        <svg
-          width="13"
-          height="13"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        >
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-          <polyline points="7 10 12 15 17 10" />
-          <line x1="12" y1="15" x2="12" y2="3" />
-        </svg>
-        Save
-      </button>
+    <div className="actions-row">
+      <div className="actions">
+        <button className="btn-ghost" onClick={() => window.history.back()}>
+          {"\u2190"} Back
+        </button>
+        <button className="btn" onClick={copyLink}>
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+          </svg>
+          Share
+        </button>
+        <button className="btn" onClick={downloadImage}>
+          <svg
+            width="13"
+            height="13"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Save
+        </button>
+      </div>
+
+      <div className="background-controls">
+        <span>Background</span>
+        <div className="background-swatches">
+          {BACKGROUND_SWATCHES.map((color) => (
+            <button
+              key={color}
+              type="button"
+              className={`background-swatch${backgroundColor === color ? " is-active" : ""}`}
+              style={{ backgroundColor: color }}
+              aria-label={`Set background color ${color}`}
+              onClick={() => setBackgroundColor(color)}
+            />
+          ))}
+        </div>
+        <input
+          className="background-picker"
+          type="color"
+          aria-label="Choose background color"
+          value={backgroundColor}
+          onChange={(event) => setBackgroundColor(event.target.value)}
+        />
+      </div>
     </div>
   );
 }

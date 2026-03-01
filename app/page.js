@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import Script from "next/script";
+import BloomHomeClient from "./BloomHomeClient";
 
 const bloomHtmlPath = path.join(process.cwd(), "public", "bloom.html");
 const bloomHtml = fs.readFileSync(bloomHtmlPath, "utf8");
@@ -61,14 +61,10 @@ const bloomScript = bloomRawScript.replace(
 
 export default function Home() {
   return (
-    <>
-      <style dangerouslySetInnerHTML={{ __html: bloomStyles }} />
-      <div dangerouslySetInnerHTML={{ __html: bloomBody }} />
-      <Script
-        id="bloom-inline-script"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{ __html: bloomScript }}
-      />
-    </>
+    <BloomHomeClient
+      bloomStyles={bloomStyles}
+      bloomBody={bloomBody}
+      bloomScript={bloomScript}
+    />
   );
 }

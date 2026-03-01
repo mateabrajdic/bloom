@@ -1,7 +1,7 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Bloom - Send Flowers",
+  title: "Petalpost - Send Flowers",
   description: "Customize a bouquet and send a message.",
 };
 

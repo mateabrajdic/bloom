@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Bloom — Send Flowers</title>
+<title>Petalpost — Send Flowers</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -33,13 +33,18 @@
     }
   }
 
+  .page-stack {
+    width: 100%;
+    max-width: 1036px;
+  }
+
   .page {
     width: 100%;
-    max-width: 960px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
-    min-height: 640px;
+    min-height: 696px;
+    background: var(--cream);
   }
 
   /* ─── LEFT: Bouquet Panel ─── */
@@ -48,7 +53,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    padding: 0 0 32px;
+    padding: 26px 0 20px;
     position: relative;
   }
 
@@ -258,7 +263,7 @@
   /* ─── RIGHT: Form ─── */
   .form-panel {
     border-left: 1px solid var(--light);
-    padding: 48px 40px;
+    padding: 68px 54px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -366,8 +371,21 @@
   .success-sub { font-size: 13px; color: var(--mid); }
 
   @media (max-width: 700px) {
-    .page { grid-template-columns: 1fr; margin-bottom: 0; padding-bottom: 0; }
-    .form-panel { border-left: none; border-top: 1px solid var(--light); padding: 32px 20px 0; margin-bottom: 0; }
+    .page-stack {
+      max-width: none;
+    }
+
+    .page {
+      grid-template-columns: 1fr;
+      min-height: auto;
+    }
+
+    .form-panel {
+      border-left: none;
+      border-top: 1px solid var(--light);
+      padding: 32px 20px 0;
+      margin-bottom: 0;
+    }
     .bouquet-stage { width: 260px; height: 380px; }
     body { padding: 32px 16px 0; margin-bottom: 0; }
   }
@@ -437,6 +455,7 @@
 </head>
 <body>
 
+<div class="page-stack">
 <div class="page">
 
   <!-- LEFT: Bouquet -->
@@ -472,14 +491,13 @@
 
   </div>
 
-  <!-- RIGHT: Form -->
   <div class="form-panel">
     <h1 class="headline">Send something <em>beautiful.</em></h1>
     <p class="sub">Pick your colours, write your message, and we'll do the rest.</p>
 
     <div class="field">
       <label for="message">Your message</label>
-      <textarea id="message" placeholder="Write something from the heart..." maxlength="1000"></textarea>
+      <textarea id="message" placeholder="Write something from the heart..." maxlength="320"></textarea>
     </div>
 
     <div class="names-row">
@@ -534,7 +552,6 @@
       </svg>
     </div>
   </div>
-
 </div>
 
 <!-- Success overlay -->

@@ -1,0 +1,126 @@
+{
+  "30c545e1-920c-4f70-8ff3-0c1fdf73a1ce": {
+    "id": "30c545e1-920c-4f70-8ff3-0c1fdf73a1ce",
+    "to": "b",
+    "from": "a",
+    "message": "test",
+    "bouquet_id": "classic",
+    "colors": {
+      "peonies": "#ffffff",
+      "poppyA": "#ffffff",
+      "poppyB": "#ffffff",
+      "poppyC": "#ffffff",
+      "poppyD": "#ffffff",
+      "buttercups": "#ffffff",
+      "ribbon": "#8b3fc8",
+      "wrapper": "#f5e1cb"
+    },
+    "created_at": "2026-03-01T17:20:11.714Z"
+  },
+  "b9772628-6b2c-4a81-a638-cae03ffdbf45": {
+    "id": "b9772628-6b2c-4a81-a638-cae03ffdbf45",
+    "to": "b",
+    "from": "a",
+    "message": "test",
+    "bouquet_id": "tropical",
+    "colors": {
+      "protea": "#ffffff",
+      "ranunculus": "#ffffff",
+      "freesia": "#ffffff",
+      "daisy": "#ffffff",
+      "ribbon": "#5e9ef4",
+      "wrapper": "#ddd0c0"
+    },
+    "created_at": "2026-03-01T17:27:13.564Z"
+  },
+  "998def50-b57c-4638-954d-01e8123b732f": {
+    "id": "998def50-b57c-4638-954d-01e8123b732f",
+    "to": "f",
+    "from": "m",
+    "message": "test",
+    "bouquet_id": "classic",
+    "colors": {
+      "peonies": "#ffffff",
+      "poppyA": "#ffffff",
+      "poppyB": "#ffffff",
+      "poppyC": "#ffffff",
+      "poppyD": "#ffffff",
+      "buttercups": "#ffffff",
+      "ribbon": "#8b3fc8",
+      "wrapper": "#f5e1cb"
+    },
+    "created_at": "2026-03-01T17:39:23.626Z"
+  },
+  "33935cc4-5baa-4136-a305-d850dc9e23f6": {
+    "id": "33935cc4-5baa-4136-a305-d850dc9e23f6",
+    "to": "b",
+    "from": "a",
+    "message": "test",
+    "bouquet_id": "classic",
+    "colors": {
+      "peonies": "#ffffff",
+      "poppyA": "#ffffff",
+      "poppyB": "#ffffff",
+      "poppyC": "#ffffff",
+      "poppyD": "#ffffff",
+      "buttercups": "#ffffff",
+      "ribbon": "#8b3fc8",
+      "wrapper": "#f5e1cb"
+    },
+    "created_at": "2026-03-01T17:58:22.166Z"
+  },
+  "2b426894-97b8-436c-bd86-fe952eaccf5c": {
+    "id": "2b426894-97b8-436c-bd86-fe952eaccf5c",
+    "to": "f",
+    "from": "m",
+    "message": "m",
+    "bouquet_id": "classic",
+    "colors": {
+      "peonies": "#ffffff",
+      "poppyA": "#ffffff",
+      "poppyB": "#ffffff",
+      "poppyC": "#ffffff",
+      "poppyD": "#ffffff",
+      "buttercups": "#ffffff",
+      "ribbon": "#8b3fc8",
+      "wrapper": "#f5e1cb"
+    },
+    "created_at": "2026-03-01T19:09:08.775Z"
+  },
+  "efc3a72c-a89c-4a79-a83a-f8d964fd2c11": {
+    "id": "efc3a72c-a89c-4a79-a83a-f8d964fd2c11",
+    "to": "f",
+    "from": "m",
+    "message": "Send something beautiful.\nPick your colours, write your message, and we'll do the rest.",
+    "bouquet_id": "classic",
+    "colors": {
+      "peonies": "#ffffff",
+      "poppyA": "#ffffff",
+      "poppyB": "#ffffff",
+      "poppyC": "#ffffff",
+      "poppyD": "#ffffff",
+      "buttercups": "#ffffff",
+      "ribbon": "#8b3fc8",
+      "wrapper": "#f5e1cb"
+    },
+    "created_at": "2026-03-01T19:23:25.834Z"
+  },
+  "c72b2652-4e15-4146-a5b2-1bb4ac0c364e": {
+    "id": "c72b2652-4e15-4146-a5b2-1bb4ac0c364e",
+    "to": "filip",
+    "from": "matea",
+    "message": "Send something beautiful.\nPick your colours, write your message, and we'll do the rest.Send something beautiful.\nPick your colours, write your message, and we'll do the rest.Send something beautiful.\nPick your colours, write your message, and we'll do the rest.Send something beautiful.\nPick your colours, write your message, and we'll do the rest.",
+    "bouquet_id": "classic",
+    "colors": {
+      "peonies": "#ffffff",
+      "poppyA": "#ffffff",
+      "poppyB": "#ffffff",
+      "poppyC": "#ffffff",
+      "poppyD": "#ffffff",
+      "buttercups": "#ffffff",
+      "ribbon": "#8b3fc8",
+      "wrapper": "#f5e1cb"
+    },
+    "created_at": "2026-03-01T20:32:54.466Z"
+  }
+}
