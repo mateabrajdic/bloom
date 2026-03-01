@@ -20,22 +20,40 @@
     color: var(--dark);
     font-family: 'DM Sans', sans-serif;
     min-height: 100vh;
+    padding: 0;
+  }
+
+  .landing-shell {
+    width: 100%;
+    height: 100vh;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    padding: 32px 16px 24px;
+  }
+
+  .landing-main {
+    width: 100%;
+    height: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: stretch;
     justify-content: center;
-    padding: 32px 16px;
+    min-height: 0;
   }
 
   @media (max-width: 700px) {
-    body {
+    .landing-main {
       align-items: flex-start;
-      padding: 32px 16px 0;
     }
   }
 
   .page-stack {
     width: 100%;
     max-width: 1036px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 
   .page {
@@ -43,7 +61,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 0;
-    min-height: 696px;
+    height: 100%;
+    align-items: center;
     background: var(--cream);
   }
 
@@ -387,30 +406,25 @@
       margin-bottom: 0;
     }
     .bouquet-stage { width: 260px; height: 380px; }
-    body { padding: 32px 16px 0; margin-bottom: 0; }
-  }
-
-  /* ─── Footer ─── */
-  .form-footer {
-    margin-top: 72px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    align-items: center;
   }
 
   .credit {
-    font-size: 11px;
-    color: var(--light);
-    letter-spacing: 0.04em;
+    display: block;
+    width: 100%;
+    margin-top: 28px;
+    flex: 0 0 auto;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--mid);
     text-align: center;
   }
 
   .credit a {
-    color: var(--mid);
+    color: inherit;
     text-decoration: none;
-    border-bottom: 1px solid var(--light);
-    padding-bottom: 1px;
+    border-bottom: 1px solid rgba(90, 90, 82, 0.35);
     transition: color 0.15s, border-color 0.15s;
   }
 
@@ -455,6 +469,8 @@
 </head>
 <body>
 
+<div class="landing-shell">
+<div class="landing-main">
 <div class="page-stack">
 <div class="page">
 
@@ -512,9 +528,6 @@
     </div>
 
     <button class="btn-send" onclick="sendBouquet()">Send Bouquet &rarr;</button>
-    <div class="form-footer">
-      <p class="credit">Built by <a href="https://matea.fyi" target="_blank" rel="noopener">Matea</a> from SunHouse studio</p>
-    </div>
     <div class="bottom-flower-wrap">
       <div class="bottom-flower">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
@@ -552,6 +565,9 @@
       </svg>
     </div>
   </div>
+</div>
+</div>
+<p class="credit">Petalpost built by <a href="https://matea.fyi" target="_blank" rel="noopener">Matea</a> from SunHouse studio</p>
 </div>
 
 <!-- Success overlay -->
