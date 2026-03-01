@@ -28,7 +28,7 @@
     height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 32px 16px 24px;
+    padding: 32px 0 24px;
   }
 
   .landing-main {
@@ -72,8 +72,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    padding: 26px 0 20px;
+    padding: 32px;
     position: relative;
+    border-right: 1px solid var(--light);
   }
 
   /* Stage wrapper: contains arrows + bouquet side by side */
@@ -84,6 +85,7 @@
     justify-content: center;
     gap: 0;
     position: relative;
+    padding: 0;
   }
 
   .slider-btn {
@@ -281,8 +283,8 @@
 
   /* ─── RIGHT: Form ─── */
   .form-panel {
-    border-left: 1px solid var(--light);
-    padding: 68px 54px;
+    padding: 32px;
+    min-width: 350px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -399,12 +401,22 @@
       min-height: auto;
     }
 
+    .bouquet-panel {
+      border-right: none;
+      padding-bottom: 32px;
+    }
+
     .form-panel {
-      border-left: none;
       border-top: 1px solid var(--light);
       padding: 32px 20px 0;
       margin-bottom: 0;
     }
+
+    .bouquet-stage-wrapper {
+      gap: 24px;
+      padding: 0;
+    }
+
     .bouquet-stage { width: 260px; height: 380px; }
   }
 
@@ -433,6 +445,14 @@
     border-color: var(--dark);
   }
 
+  .credit-mobile {
+    display: none;
+  }
+
+  .credit-desktop {
+    display: block;
+  }
+
   /* Bottom decorative flower — mobile only */
   .bottom-flower {
     display: none;
@@ -442,26 +462,16 @@
   }
 
   @media (max-width: 700px) {
-    .bottom-flower-wrap {
-      display: block;
-      width: 100%;
-      overflow: hidden;
-      height: 136px; /* 146px svg height - 10px bleed */
-      margin-top: 16px;
+    .slider-btn {
+      width: 32px;
     }
 
-    .bottom-flower {
-      display: flex;
-      justify-content: center;
-      position: relative;
-      top: 10px;
-      pointer-events: none;
+    .credit-mobile {
+      display: block;
     }
 
-    .bottom-flower svg {
-      width: 146px;
-      height: 146px;
-      display: block;
+    .credit-desktop {
+      display: none;
     }
   }
 
@@ -528,6 +538,7 @@
     </div>
 
     <button class="btn-send" onclick="sendBouquet()">Send Bouquet &rarr;</button>
+    <p class="credit credit-mobile">Petalpost built by <a href="https://matea.fyi" target="_blank" rel="noopener">Matea</a> from SunHouse studio</p>
     <div class="bottom-flower-wrap">
       <div class="bottom-flower">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500">
@@ -567,7 +578,7 @@
   </div>
 </div>
 </div>
-<p class="credit">Petalpost built by <a href="https://matea.fyi" target="_blank" rel="noopener">Matea</a> from SunHouse studio</p>
+<p class="credit credit-desktop">Petalpost built by <a href="https://matea.fyi" target="_blank" rel="noopener">Matea</a> from SunHouse studio</p>
 </div>
 
 <!-- Success overlay -->
