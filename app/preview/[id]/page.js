@@ -42,7 +42,7 @@ const BOUQUET_COLOR_GROUPS = {
     freesia: { ids: ["Freesia01", "Freesia02", "Freesia03", "Freesia04"] },
     daisy: { ids: ["Daisy01", "Daisy02", "Daisy03"] },
     ribbon: { ids: ["ribbon"] },
-    wrapper: { ids: ["wrapper"] },
+    wrapper: { ids: ["wrapper", "wrapper1"] },
   },
   wildflowers: {
     marigold: { ids: ["Marigold"] },
