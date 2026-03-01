@@ -552,12 +552,12 @@ const bouquets = [
     id: 'classic',
     name: 'Classic Bouquet',
     colorGroups: [
-      { key: 'peonies',    ids: ['peony01','peony02','peony03'],                   color: 'transparent', label: 'Peonies',    type: 'flower' },
-      { key: 'poppyA',     ids: ['poppy01','poppy09'],                              color: 'transparent', label: 'Poppy A',    type: 'flower' },
-      { key: 'poppyB',     ids: ['poppy03','poppy06'],                              color: 'transparent', label: 'Poppy B',    type: 'flower' },
-      { key: 'poppyC',     ids: ['poppy02','poppy08'],                              color: 'transparent', label: 'Poppy C',    type: 'flower' },
-      { key: 'poppyD',     ids: ['poppy04','poppy05','poppy07'],                   color: 'transparent', label: 'Poppy D',    type: 'flower' },
-      { key: 'buttercups', ids: ['buttercup01','buttercup02'],                     color: 'transparent', label: 'Buttercups', type: 'flower' },
+      { key: 'peonies',    ids: ['peony01','peony02','peony03'],                   color: '#ffffff', label: 'Peonies',    type: 'flower' },
+      { key: 'poppyA',     ids: ['poppy01','poppy09'],                              color: '#ffffff', label: 'Poppy A',    type: 'flower' },
+      { key: 'poppyB',     ids: ['poppy03','poppy06'],                              color: '#ffffff', label: 'Poppy B',    type: 'flower' },
+      { key: 'poppyC',     ids: ['poppy02','poppy08'],                              color: '#ffffff', label: 'Poppy C',    type: 'flower' },
+      { key: 'poppyD',     ids: ['poppy04','poppy05','poppy07'],                   color: '#ffffff', label: 'Poppy D',    type: 'flower' },
+      { key: 'buttercups', ids: ['buttercup01','buttercup02'],                     color: '#ffffff', label: 'Buttercups', type: 'flower' },
       { key: 'ribbon',     ids: ['ribbon'], isGroup: true,                          color: '#8b3fc8', label: 'Ribbon',     type: 'utility' },
       { key: 'wrapper',    ids: ['paper_wrap'],                                     color: '#f5e1cb', label: 'Wrapper',    type: 'wrapper' },
     ]
@@ -566,10 +566,10 @@ const bouquets = [
     id: 'tropical',
     name: 'Tropical Bouquet',
     colorGroups: [
-      { key: 'protea',     ids: ['protea01','protea02','protea03'],               color: 'transparent', label: 'Protea',     type: 'flower' },
-      { key: 'ranunculus', ids: ['Ranunculus01','Ranunculus02'],                   color: 'transparent', label: 'Ranunculus', type: 'flower' },
-      { key: 'freesia',    ids: ['Freesia02','Freesia03','Freesia04','Freesia05','Freesia08'], color: 'transparent', label: 'Freesia', type: 'flower' },
-      { key: 'daisy',      ids: ['Daisy01','Daisy02','Daisy03'],                  color: 'transparent', label: 'Daisy',      type: 'flower' },
+      { key: 'protea',     ids: ['protea01','protea02','protea03'],               color: '#ffffff', label: 'Protea',     type: 'flower' },
+      { key: 'ranunculus', ids: ['Ranunculus01','Ranunculus02'],                   color: '#ffffff', label: 'Ranunculus', type: 'flower' },
+      { key: 'freesia',    ids: ['Freesia02','Freesia03','Freesia04','Freesia05','Freesia08'], color: '#ffffff', label: 'Freesia', type: 'flower' },
+      { key: 'daisy',      ids: ['Daisy01','Daisy02','Daisy03'],                  color: '#ffffff', label: 'Daisy',      type: 'flower' },
       { key: 'ribbon',     ids: ['ribbon'],                                        color: '#5e9ef4', label: 'Ribbon',     type: 'utility' },
       { key: 'wrapper',    ids: ['paper','paper1'],                                color: '#ddd0c0', label: 'Wrapper',    type: 'wrapper' },
     ]
@@ -578,11 +578,11 @@ const bouquets = [
     id: 'wildflowers',
     name: 'Wildflower Bouquet',
     colorGroups: [
-      { key: 'marigold',   ids: ['Marigold'],                                      color: 'transparent', label: 'Marigold',   type: 'flower' },
-      { key: 'snowdrops',  ids: ['Snowdrop01','Snowdrop02','Snowdrop03','Snowdrop04'], color: 'transparent', label: 'Snowdrops', type: 'flower' },
-      { key: 'gerbera',    ids: ['Gerbera'],                                       color: 'transparent', label: 'Gerbera',    type: 'flower' },
-      { key: 'pansy',      ids: ['Pansy01','Pansy02','Pansy03'],                  color: 'transparent', label: 'Pansy',      type: 'flower' },
-      { key: 'rudbeckia',  ids: ['Rudbeckia'],                                     color: 'transparent', label: 'Rudbeckia',  type: 'flower' },
+      { key: 'marigold',   ids: ['Marigold'],                                      color: '#ffffff', label: 'Marigold',   type: 'flower' },
+      { key: 'snowdrops',  ids: ['Snowdrop01','Snowdrop02','Snowdrop03','Snowdrop04'], color: '#ffffff', label: 'Snowdrops', type: 'flower' },
+      { key: 'gerbera',    ids: ['Gerbera'],                                       color: '#ffffff', label: 'Gerbera',    type: 'flower' },
+      { key: 'pansy',      ids: ['Pansy01','Pansy02','Pansy03'],                  color: '#ffffff', label: 'Pansy',      type: 'flower' },
+      { key: 'rudbeckia',  ids: ['Rudbeckia'],                                     color: '#ffffff', label: 'Rudbeckia',  type: 'flower' },
       { key: 'ribbon',     ids: ['RIBBON'],                                        color: '#ffffff', label: 'Ribbon',     type: 'utility' },
     ]
   }
@@ -658,7 +658,7 @@ function applyColor(bouquetId, groupKey, color) {
   const swatch = document.getElementById('swatch-' + groupKey);
   if (swatch) {
     swatch.style.background = color;
-    swatch.style.boxShadow = color === '#ffffff' || color === 'transparent' ? 'inset 0 0 0 1.5px #d8d2c4' : '';
+    swatch.style.boxShadow = color === '#ffffff' ? 'inset 0 0 0 1.5px #d8d2c4' : '';
   }
 }
 
@@ -703,7 +703,7 @@ function makeSwatch(bouquet, group) {
   btn.className = 'swatch';
   btn.id = 'swatch-' + group.key;
   btn.style.background = group.color;
-  if (group.color === '#ffffff' || group.color === 'transparent') btn.style.boxShadow = 'inset 0 0 0 1.5px #d8d2c4';
+  if (group.color === '#ffffff') btn.style.boxShadow = 'inset 0 0 0 1.5px #d8d2c4';
   btn.setAttribute('aria-label', group.label + ' color');
 
   // Popover — preset dots only, no color input strip
