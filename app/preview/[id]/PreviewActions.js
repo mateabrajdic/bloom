@@ -131,7 +131,7 @@ export default function PreviewActions() {
       </div>
       <div className={`copy-toast${copied ? " show" : ""}`} aria-live="polite">
         
-        <span className="copy-toast-text">Your FlowerNote is ready to share.</span>
+        <span className="copy-toast-text">Copied! Your FlowerNote is ready to share.</span>
       </div>
     </div>
   );
