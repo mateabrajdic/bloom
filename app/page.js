@@ -23,9 +23,9 @@ const sendBouquetOverride = `async function sendBouquet() {
   const from = document.getElementById('fromName').value.trim();
   const to = document.getElementById('toName').value.trim();
   const message = document.getElementById('message').value.trim();
-  const website = document.getElementById('website').value.trim();
+  const petalpostConfirmCode = document.getElementById('petalpostConfirmCode').value.trim();
   if (!from || !to) { alert('Please fill in your name and the recipient\\'s name.'); return; }
-  if (website) { return; }
+  if (petalpostConfirmCode) { return; }
 
   const bouquet = bouquets[currentIdx];
   const colors = bouquet.colorGroups.reduce((acc, group) => {
@@ -40,7 +40,7 @@ const sendBouquetOverride = `async function sendBouquet() {
       body: JSON.stringify({
         app: '${APP_NAME}',
         form: '${FORM_NAME}',
-        website,
+        petalpost_confirm_code: petalpostConfirmCode,
         to,
         from,
         message,

@@ -55,7 +55,9 @@ export async function POST(request) {
   try {
     const payload = await request.json();
     const normalizedMessage = String(payload?.message || "").trim();
-    const normalizedHoneypot = String(payload?.website || "").trim();
+    const normalizedHoneypot = String(
+      payload?.petalpost_confirm_code || payload?.website || ""
+    ).trim();
     const submissionMeta = {
       app: normalizeWebhookValue(
         payload?.app,
