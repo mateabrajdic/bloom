@@ -2,10 +2,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { notFound } from "next/navigation";
 import { getOrderById } from "../../../lib/orders-store";
+import {
+  getBouquetSvgMarkup,
+  MAX_MESSAGE_LENGTH,
+  normalizeBouquetId,
+} from "../../../lib/preview-card";
 import PreviewActions from "./PreviewActions";
 
 export const dynamic = "force-dynamic";
-const MAX_MESSAGE_LENGTH = 320;
 const PAPER_MIN_HEIGHT = 400;
 const BACK_CARD_OFFSET = 30;
 
@@ -58,61 +62,6 @@ const extraPreviewStyles = `
     gap: 16px;
     align-items: center;
     justify-content: center;
-  }
-
-  .background-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--mid);
-    font-size: 10px;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-
-  .background-swatches {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-  }
-
-  .background-swatch {
-    width: 18px;
-    height: 18px;
-    border-radius: 999px;
-    border: 1px solid rgba(28, 38, 38, 0.18);
-    cursor: pointer;
-    padding: 0;
-    transition: transform 0.15s, border-color 0.15s;
-  }
-
-  .background-swatch:hover {
-    transform: translateY(-1px);
-    border-color: var(--dark);
-  }
-
-  .background-swatch.is-active {
-    border-width: 2px;
-    border-color: var(--dark);
-  }
-
-  .background-picker {
-    width: 26px;
-    height: 26px;
-    padding: 0;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .background-picker::-webkit-color-swatch-wrapper {
-    padding: 0;
-  }
-
-  .background-picker::-webkit-color-swatch {
-    border: 1px solid rgba(28, 38, 38, 0.18);
-    border-radius: 999px;
   }
 
   .postcard-stage {
@@ -196,8 +145,8 @@ const extraPreviewStyles = `
       rgba(216,210,196,0.32) calc(var(--letter-rule) - 1px),
       rgba(216,210,196,0.32) var(--letter-rule)
     );
-    background-position: 0 42px;
-    padding: 42px 42px 34px;
+    background-position: 0 0;
+    padding: 38px 42px 16px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -237,8 +186,10 @@ const extraPreviewStyles = `
   }
 
   .letter-to {
+    font-size: 14px;
     line-height: var(--letter-rule);
     min-height: var(--letter-rule);
+    text-transform: none;
   }
 
   .letter-message {
@@ -247,13 +198,16 @@ const extraPreviewStyles = `
 
   .letter-footer {
     margin-top: auto;
+    padding-bottom: calc(9px - var(--letter-rule));
   }
 
   .letter-from {
+    display: flex;
+    align-items: center;
     line-height: var(--letter-rule);
     min-height: var(--letter-rule);
     margin-top: 0;
-    padding-top: 0;
+    padding-top: 18px;
   }
 
   .postcard-credit a {
@@ -279,12 +233,6 @@ const extraPreviewStyles = `
 
     .actions-row {
       gap: 12px;
-    }
-
-    .background-controls {
-      width: 100%;
-      justify-content: center;
-      flex-wrap: wrap;
     }
 
     .postcard-stage {
@@ -352,7 +300,7 @@ const extraPreviewStyles = `
       margin: -34px 0 0 auto;
       padding: 32px 28px 28px;
       transform: rotate(-1.25deg);
-      background-position: 0 32px;
+      background-position: 0 0;
       z-index: 2;
     }
 
@@ -368,123 +316,6 @@ const extraPreviewStyles = `
   }
 `;
 
-const BOUQUET_META = {
-  classic: { file: "classic.svg", label: "Classic Bouquet" },
-  tropical: { file: "tropical.svg", label: "Tropical Bouquet" },
-  wildflowers: { file: "wildflowers.svg", label: "Wildflower Bouquet" },
-};
-
-const BOUQUET_COLOR_GROUPS = {
-  classic: {
-    peonies: { ids: ["peony01", "peony02", "peony03"] },
-    poppyA: { ids: ["poppy01", "poppy09"] },
-    poppyB: { ids: ["poppy03", "poppy06"] },
-    poppyC: { ids: ["poppy02", "poppy08"] },
-    poppyD: { ids: ["poppy04", "poppy05", "poppy07"] },
-    buttercups: { ids: ["buttercup01", "buttercup02", "buttercup03"] },
-    ribbon: { ids: ["ribbon"], isGroup: true },
-    wrapper: { ids: ["paper_wrap"] },
-  },
-  tropical: {
-    protea: { ids: ["Protea01", "Protea02", "Protea03"] },
-    ranunculus: { ids: ["Ranunculus01", "Ranunculus02"] },
-    freesia: { ids: ["Freesia01", "Freesia02", "Freesia03", "Freesia04"] },
-    daisy: { ids: ["Daisy01", "Daisy02", "Daisy03"] },
-    ribbon: { ids: ["ribbon"] },
-    wrapper: { ids: ["wrapper", "wrapper1"] },
-  },
-  wildflowers: {
-    marigold: { ids: ["Marigold"] },
-    snowdrops: { ids: ["Snowdrop01", "Snowdrop02", "Snowdrop03", "Snowdrop04"] },
-    gerbera: { ids: ["Gerbera"] },
-    pansy: { ids: ["Pansy01", "Pansy02", "Pansy03"] },
-    rudbeckia: { ids: ["Rudbeckia"] },
-    ribbon: { ids: ["RIBBON"] },
-  },
-};
-
-function escapeRegExp(value) {
-  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
-
-function replaceFillInStyle(styleValue, color) {
-  if (/(^|;)\s*fill\s*:/i.test(styleValue)) {
-    return styleValue.replace(/(^|;)\s*fill\s*:[^;]*/i, `$1 fill: ${color}`);
-  }
-
-  const trimmed = styleValue.trim();
-  if (!trimmed) return `fill: ${color};`;
-  return `${trimmed.replace(/;?$/, ";")} fill: ${color};`;
-}
-
-function setFillOnTag(tag, color) {
-  if (/\sstyle\s*=\s*['"]/i.test(tag)) {
-    return tag.replace(/\sstyle\s*=\s*(["'])(.*?)\1/i, (full, quote, value) => {
-      const updatedStyle = replaceFillInStyle(value, color);
-      return ` style=${quote}${updatedStyle}${quote}`;
-    });
-  }
-
-  if (/\sfill\s*=\s*['"]/i.test(tag)) {
-    return tag.replace(/\sfill\s*=\s*(["']).*?\1/i, ` fill=\"${color}\"`);
-  }
-
-  if (tag.endsWith("/>")) {
-    return `${tag.slice(0, -2)} style=\"fill: ${color};\"/>`;
-  }
-
-  return `${tag.slice(0, -1)} style=\"fill: ${color};\">`;
-}
-
-function setFillByElementId(svg, elementId, color) {
-  const tagPattern = new RegExp(`(<[^>]*\\sid=["']${escapeRegExp(elementId)}["'][^>]*>)`);
-  return svg.replace(tagPattern, (tag) => setFillOnTag(tag, color));
-}
-
-function setGroupFirstPathFill(svg, groupId, color) {
-  const groupPattern = new RegExp(
-    `(<g[^>]*\\sid=["']${escapeRegExp(groupId)}["'][^>]*>[\\s\\S]*?<\\/g>)`
-  );
-
-  return svg.replace(groupPattern, (groupMarkup) =>
-    groupMarkup.replace(/<path\b[^>]*>/, (pathTag) => setFillOnTag(pathTag, color))
-  );
-}
-
-function normalizeBouquetId(value) {
-  const normalized = String(value || "wildflowers").toLowerCase();
-  if (BOUQUET_META[normalized]) return normalized;
-  return "wildflowers";
-}
-
-function applyColorOverrides(svgMarkup, bouquetId, colors) {
-  const groups = BOUQUET_COLOR_GROUPS[bouquetId] || {};
-  let updatedSvg = svgMarkup;
-
-  for (const [groupKey, color] of Object.entries(colors || {})) {
-    const group = groups[groupKey];
-    if (!group) continue;
-
-    for (const elementId of group.ids) {
-      updatedSvg = setFillByElementId(updatedSvg, elementId, color);
-      if (group.isGroup) {
-        updatedSvg = setGroupFirstPathFill(updatedSvg, elementId, color);
-      }
-    }
-  }
-
-  return updatedSvg;
-}
-
-function getBouquetSvgMarkup(bouquetId, colors) {
-  const chosenBouquetId = normalizeBouquetId(bouquetId);
-  const fileName = BOUQUET_META[chosenBouquetId].file;
-  const filePath = path.join(process.cwd(), "public", fileName);
-
-  const sourceSvg = fs.readFileSync(filePath, "utf8");
-  return applyColorOverrides(sourceSvg, chosenBouquetId, colors);
-}
-
 function estimateDesktopMessageLines(message) {
   const normalized = String(message || "").replace(/\r\n/g, "\n").trim();
   if (!normalized) return 1;
@@ -493,6 +324,40 @@ function estimateDesktopMessageLines(message) {
     const lineCount = Math.max(1, Math.ceil(paragraph.length / 26));
     return total + lineCount;
   }, 0);
+}
+
+export async function generateMetadata({ params }) {
+  const resolvedParams = await Promise.resolve(params);
+  const id = resolvedParams?.id;
+  const order = await getOrderById(id);
+
+  if (!order) {
+    return {
+      title: "Petalpost Preview",
+      description: "A bouquet and letter preview from Petalpost.",
+    };
+  }
+
+  const previewTitle = `A bouquet for ${order.to}`;
+  const previewDescription =
+    String(order.message || "").trim().slice(0, 140) ||
+    `A bouquet and note from ${order.from}.`;
+
+  return {
+    title: previewTitle,
+    description: previewDescription,
+    openGraph: {
+      title: previewTitle,
+      description: previewDescription,
+      images: [`/preview/${encodeURIComponent(id)}/opengraph-image`],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: previewTitle,
+      description: previewDescription,
+      images: [`/preview/${encodeURIComponent(id)}/opengraph-image`],
+    },
+  };
 }
 
 export default async function PreviewPage({ params }) {
@@ -543,7 +408,6 @@ export default async function PreviewPage({ params }) {
                 <div className="letter-footer">
                   <div className="letter-from">
                     <span>With love, {order.from}</span>
-                    <span className="letter-brand">Petalpost</span>
                   </div>
                 </div>
               </div>

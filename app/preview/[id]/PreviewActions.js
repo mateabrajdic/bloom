@@ -1,15 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 const DEFAULT_BACKGROUND = "#f9eef0";
-const BACKGROUND_SWATCHES = [
-  "#f9eef0",
-  "#f5f0e8",
-  "#f6d7de",
-  "#dfe8f3",
-  "#e2eee3",
-];
 
 async function ensureHtml2Canvas() {
   if (window.html2canvas) return window.html2canvas;
@@ -25,18 +16,6 @@ async function ensureHtml2Canvas() {
 }
 
 export default function PreviewActions() {
-  const [backgroundColor, setBackgroundColor] = useState(DEFAULT_BACKGROUND);
-
-  useEffect(() => {
-    document.documentElement.style.setProperty("--pink-bg", backgroundColor);
-  }, [backgroundColor]);
-
-  useEffect(() => {
-    return () => {
-      document.documentElement.style.removeProperty("--pink-bg");
-    };
-  }, []);
-
   async function copyLink() {
     navigator.clipboard
       .writeText(window.location.href)
@@ -62,7 +41,7 @@ export default function PreviewActions() {
     exportFrame.style.display = "flex";
     exportFrame.style.alignItems = "center";
     exportFrame.style.justifyContent = "center";
-    exportFrame.style.background = backgroundColor;
+    exportFrame.style.background = DEFAULT_BACKGROUND;
     exportFrame.style.padding = `${padding}px`;
     exportFrame.style.boxSizing = "border-box";
 
@@ -128,29 +107,6 @@ export default function PreviewActions() {
           </svg>
           Save
         </button>
-      </div>
-
-      <div className="background-controls">
-        <span>Background</span>
-        <div className="background-swatches">
-          {BACKGROUND_SWATCHES.map((color) => (
-            <button
-              key={color}
-              type="button"
-              className={`background-swatch${backgroundColor === color ? " is-active" : ""}`}
-              style={{ backgroundColor: color }}
-              aria-label={`Set background color ${color}`}
-              onClick={() => setBackgroundColor(color)}
-            />
-          ))}
-        </div>
-        <input
-          className="background-picker"
-          type="color"
-          aria-label="Choose background color"
-          value={backgroundColor}
-          onChange={(event) => setBackgroundColor(event.target.value)}
-        />
       </div>
     </div>
   );
