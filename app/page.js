@@ -31,7 +31,7 @@ const sendBouquetOverride = `async function sendBouquet() {
   if (btn) {
     btn.disabled = true;
     btn.classList.add('loading');
-    btn.innerHTML = 'Sending Bouquet...';
+    btn.innerHTML = 'Creating...';
   }
 
   const bouquet = bouquets[currentIdx];
@@ -75,7 +75,7 @@ const sendBouquetOverride = `async function sendBouquet() {
     if (btn) {
       btn.disabled = false;
       btn.classList.remove('loading');
-      btn.innerHTML = 'Send Bouquet &rarr;';
+      btn.innerHTML = 'Create Bouquet &rarr;';
     }
   }
 }`;

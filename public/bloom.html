@@ -589,7 +589,7 @@
       </div>
     </div>
 
-    <button class="btn-send" id="sendBouquetBtn" onclick="sendBouquet()">Send Bouquet &rarr;</button>
+    <button class="btn-send" id="sendBouquetBtn" onclick="sendBouquet()">Create Bouquet &rarr;</button>
     <p class="credit credit-mobile">FlowerNote built by <a href="https://matea.fyi" target="_blank" rel="noopener">Matea</a> from SunHouse studio</p>
     <div class="bottom-flower-wrap">
       <div class="bottom-flower">
@@ -976,7 +976,7 @@ function setSendButtonLoading(isLoading) {
   if (!btn) return;
   btn.disabled = isLoading;
   btn.classList.toggle('loading', isLoading);
-  btn.innerHTML = isLoading ? 'Sending Bouquet...' : 'Send Bouquet &rarr;';
+  btn.innerHTML = isLoading ? 'Creating...' : 'Create Bouquet &rarr;';
 }
 
 // Send
