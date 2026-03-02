@@ -349,13 +349,13 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: previewTitle,
       description: previewDescription,
-      images: [`/preview/${encodeURIComponent(id)}/opengraph-image`],
+      images: [`/bouquet/${encodeURIComponent(id)}/opengraph-image`],
     },
     twitter: {
       card: "summary_large_image",
       title: previewTitle,
       description: previewDescription,
-      images: [`/preview/${encodeURIComponent(id)}/opengraph-image`],
+      images: [`/bouquet/${encodeURIComponent(id)}/opengraph-image`],
     },
   };
 }

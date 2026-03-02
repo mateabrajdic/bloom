@@ -61,7 +61,7 @@ const sendBouquetOverride = `async function sendBouquet() {
     const data = responseData;
     if (!data || !data.id) throw new Error('Missing preview id');
 
-    window.location.href = '/preview/' + encodeURIComponent(data.id);
+    window.location.href = '/bouquet/' + encodeURIComponent(data.id);
   } catch (err) {
     console.error(err);
     alert('Could not send bouquet right now. Please try again.');

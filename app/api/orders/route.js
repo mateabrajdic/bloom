@@ -28,7 +28,7 @@ async function sendSubmissionWebhook({ request, order, submissionMeta }) {
     submitted_at: order.created_at,
     order_id: order.id,
     preview_id: order.preview_id,
-    preview_url: `${origin}/preview/${encodeURIComponent(order.preview_id)}`,
+    preview_url: `${origin}/bouquet/${encodeURIComponent(order.preview_id)}`,
     to: order.to,
     from: order.from,
     message: order.message,
