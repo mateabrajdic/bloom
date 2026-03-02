@@ -70,9 +70,10 @@ const extraPreviewStyles = `
     top: calc(100%);
     left: 50%;
     transform: translateX(-50%) translateY(-6px);
-    min-width: 300px;
+    min-width: 400px;
     padding: 14px 16px;
     display: flex;
+    text-align:center;
     flex-direction: column;
     gap: 3px;
     /* border: 1px solid rgba(90, 90, 82, 0.12);
@@ -275,7 +276,7 @@ const extraPreviewStyles = `
     }
 
     .copy-toast {
-      min-width: min(300px, calc(100vw - 48px));
+      min-width: min(400px, calc(100vw - 48px));
       top: calc(100%);
       text-align: center;
     }
