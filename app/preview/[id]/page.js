@@ -207,7 +207,7 @@ const extraPreviewStyles = `
     line-height: var(--letter-rule);
     min-height: var(--letter-rule);
     margin-top: 0;
-    padding-top: 18px;
+    padding-top: 38px;
   }
 
   .postcard-credit a {
@@ -313,6 +313,10 @@ const extraPreviewStyles = `
       transform: rotate(90deg);
       transform-origin: center center;
     }
+
+    .letter-from {
+      padding-top: 18px;
+    }
   }
 `;
 
@@ -330,11 +334,19 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await Promise.resolve(params);
   const id = resolvedParams?.id;
   const order = await getOrderById(id);
+  const staticOgImage = "/petalpost-og.svg";
 
   if (!order) {
     return {
       title: "Petalpost Preview",
       description: "A bouquet and letter preview from Petalpost.",
+      openGraph: {
+        images: [staticOgImage],
+      },
+      twitter: {
+        card: "summary_large_image",
+        images: [staticOgImage],
+      },
     };
   }
 
@@ -349,13 +361,13 @@ export async function generateMetadata({ params }) {
     openGraph: {
       title: previewTitle,
       description: previewDescription,
-      images: [`/bouquet/${encodeURIComponent(id)}/opengraph-image`],
+      images: [staticOgImage],
     },
     twitter: {
       card: "summary_large_image",
       title: previewTitle,
       description: previewDescription,
-      images: [`/bouquet/${encodeURIComponent(id)}/opengraph-image`],
+      images: [staticOgImage],
     },
   };
 }

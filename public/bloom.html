@@ -324,7 +324,10 @@
     line-height: 1.6;
   }
 
-  .field { margin-bottom: 20px; }
+  .field {
+    position: relative;
+    margin-bottom: 20px;
+  }
 
   label {
     display: block;
@@ -352,7 +355,17 @@
 
   input[type="text"]:focus, textarea:focus { border-bottom-color: var(--dark); }
   input[type="text"]::placeholder, textarea::placeholder { color: var(--light); }
-  textarea { min-height: 80px; line-height: 1.6; overflow: hidden; }
+  textarea { min-height: 80px; line-height: 1.6; overflow: hidden; padding-bottom: 26px; }
+  .char-count {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--light);
+    pointer-events: none;
+  }
   .hp-field {
     position: absolute;
     left: -9999px;
@@ -549,6 +562,7 @@
     <div class="field">
       <label for="message">Your message</label>
       <textarea id="message" placeholder="Write something from the heart..." maxlength="320"></textarea>
+      <div class="char-count" id="messageCount">0/320</div>
     </div>
 
     <div class="field hp-field" aria-hidden="true">
@@ -933,10 +947,21 @@ buildPalette(0);
 
 // Auto-expand textarea
 const msg = document.getElementById('message');
+const msgCount = document.getElementById('messageCount');
+
+function updateMessageField() {
+  msg.style.height = 'auto';
+  msg.style.height = msg.scrollHeight + 'px';
+  if (msgCount) {
+    msgCount.textContent = msg.value.length + '/320';
+  }
+}
+
 msg.addEventListener('input', function() {
-  this.style.height = 'auto';
-  this.style.height = this.scrollHeight + 'px';
+  updateMessageField();
 });
+
+updateMessageField();
 
 // Send
 function sendBouquet() {
