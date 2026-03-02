@@ -267,7 +267,7 @@ const extraPreviewStyles = `
     }
 
     .preview-main {
-      gap: 24px;
+      gap: 32px;
     }
 
     .actions-row {
@@ -275,8 +275,9 @@ const extraPreviewStyles = `
     }
 
     .copy-toast {
-      min-width: min(240px, calc(100vw - 48px));
-      top: calc(100% + 10px);
+      min-width: min(300px, calc(100vw - 48px));
+      top: calc(100%);
+      text-align: center;
     }
 
     .postcard-stage {
