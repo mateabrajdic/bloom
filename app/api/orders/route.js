@@ -83,9 +83,10 @@ export async function POST(request) {
     const order = await createOrder(payload);
     await sendSubmissionWebhook({ request, order, submissionMeta });
     return Response.json({ id: order.preview_id, order }, { status: 201 });
-  } catch {
+  } catch (error) {
+    console.error("Could not create order", error);
     return Response.json(
-      { error: "Could not create order" },
+      { error: error?.message || "Could not create order" },
       { status: 400 }
     );
   }

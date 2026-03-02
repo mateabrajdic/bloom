@@ -49,9 +49,16 @@ const sendBouquetOverride = `async function sendBouquet() {
       }),
     });
 
-    if (!res.ok) throw new Error('Failed to create order');
+    let responseData = null;
+    try {
+      responseData = await res.json();
+    } catch {}
 
-    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(responseData?.error || 'Failed to create order');
+    }
+
+    const data = responseData;
     if (!data || !data.id) throw new Error('Missing preview id');
 
     window.location.href = '/preview/' + encodeURIComponent(data.id);
