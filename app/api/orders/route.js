@@ -2,7 +2,7 @@ import { createOrder } from "../../../lib/orders-store";
 
 export const runtime = "nodejs";
 const MAX_MESSAGE_LENGTH = 320;
-const DEFAULT_WEBHOOK_APP = "petalpost";
+const DEFAULT_WEBHOOK_APP = "flowernote";
 const DEFAULT_WEBHOOK_FORM = "letter";
 const DEFAULT_WEBHOOK_URL =
   "https://hook.eu1.make.com/drbybcn9sd9cox0fhbb09gwbca0w8qpz";

@@ -7,7 +7,7 @@ import {
 } from "../../../lib/preview-card";
 
 export const runtime = "nodejs";
-export const alt = "Petalpost bouquet preview";
+export const alt = "FlowerNote bouquet preview";
 export const size = {
   width: 1200,
   height: 630,
@@ -201,7 +201,7 @@ export default async function OpenGraphImage({ params }) {
             }}
           >
             <div style={{ display: "flex" }}>With love, {from}</div>
-            <div style={{ display: "flex", color: "#cfc6b7" }}>Petalpost</div>
+            <div style={{ display: "flex", color: "#cfc6b7" }}>FlowerNote</div>
           </div>
         </div>
       </div>

@@ -339,7 +339,7 @@ export async function generateMetadata({ params }) {
   if (!order) {
     return {
       title: "Petalpost Preview",
-      description: "A bouquet and letter preview from Petalpost.",
+      description: "A bouquet and letter preview from FlowerNote.",
       openGraph: {
         images: [staticOgImage],
       },
@@ -428,7 +428,7 @@ export default async function PreviewPage({ params }) {
         </div>
 
         <p className="postcard-credit">
-          Petalpost built by{" "}
+          FlowerNote built by{" "}
           <a href="https://matea.fyi" target="_blank" rel="noreferrer">
             Matea from SunHouse Studio
           </a>

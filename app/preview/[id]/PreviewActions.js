@@ -63,7 +63,7 @@ export default function PreviewActions() {
     }
 
     const link = document.createElement("a");
-    link.download = "petalpost-letter.png";
+    link.download = "flowernote-letter.png";
     link.href = canvas.toDataURL("image/png");
     link.click();
   }

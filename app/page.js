@@ -4,7 +4,7 @@ import BloomHomeClient from "./BloomHomeClient";
 
 const bloomHtmlPath = path.join(process.cwd(), "public", "bloom.html");
 const bloomHtml = fs.readFileSync(bloomHtmlPath, "utf8");
-const APP_NAME = "petalpost";
+const APP_NAME = "flowernote";
 const FORM_NAME = "letter";
 
 function extractPart(regex, label) {

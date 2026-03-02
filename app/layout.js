@@ -2,16 +2,16 @@ import "./globals.css";
 
 export const metadata = {
   metadataBase: new URL("https://bloom-rose-kappa.vercel.app"),
-  title: "Petalpost - Send Flowers",
+  title: "FlowerNote - Send Flowers",
   description: "Customize a bouquet and send a message.",
   openGraph: {
-    title: "Petalpost - Send Flowers",
+    title: "FlowerNote - Send Flowers",
     description: "Customize a bouquet and send a message.",
     images: ["/petalpost-og.png"],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Petalpost - Send Flowers",
+    title: "FlowerNote - Send Flowers",
     description: "Customize a bouquet and send a message.",
     images: ["/petalpost-og.png"],
   },
