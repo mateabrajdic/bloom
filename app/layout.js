@@ -7,13 +7,13 @@ export const metadata = {
   openGraph: {
     title: "Petalpost - Send Flowers",
     description: "Customize a bouquet and send a message.",
-    images: ["/petalpost-og.svg"],
+    images: ["/petalpost-og.png"],
   },
   twitter: {
     card: "summary_large_image",
     title: "Petalpost - Send Flowers",
     description: "Customize a bouquet and send a message.",
-    images: ["/petalpost-og.svg"],
+    images: ["/petalpost-og.png"],
   },
 };
 

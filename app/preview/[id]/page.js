@@ -334,7 +334,7 @@ export async function generateMetadata({ params }) {
   const resolvedParams = await Promise.resolve(params);
   const id = resolvedParams?.id;
   const order = await getOrderById(id);
-  const staticOgImage = "/petalpost-og.svg";
+  const staticOgImage = "/petalpost-og.png";
 
   if (!order) {
     return {
