@@ -18,7 +18,7 @@
   body {
     background: var(--cream);
     color: var(--dark);
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     min-height: 100vh;
     padding: 0;
   }
@@ -307,7 +307,7 @@
   }
 
   .headline {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-cormorant-garamond), serif;
     font-size: 36px;
     font-weight: 300;
     line-height: 1.15;
@@ -342,7 +342,7 @@
     border: none;
     border-bottom: 1.5px solid var(--light);
     padding: 8px 0;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 15px;
     color: var(--dark);
     outline: none;
@@ -353,6 +353,15 @@
   input[type="text"]:focus, textarea:focus { border-bottom-color: var(--dark); }
   input[type="text"]::placeholder, textarea::placeholder { color: var(--light); }
   textarea { min-height: 80px; line-height: 1.6; overflow: hidden; }
+  .hp-field {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    opacity: 0;
+    pointer-events: none;
+  }
 
   .names-row {
     display: grid;
@@ -367,7 +376,7 @@
     color: var(--cream);
     border: none;
     padding: 16px 24px;
-    font-family: 'DM Sans', sans-serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 13px;
     font-weight: 500;
     letter-spacing: 0.12em;
@@ -399,7 +408,7 @@
   .success-icon { font-size: 48px; }
 
   .success-text {
-    font-family: 'Cormorant Garamond', serif;
+    font-family: var(--font-cormorant-garamond), serif;
     font-size: 28px;
     font-weight: 300;
     color: var(--dark);
@@ -542,6 +551,11 @@
       <textarea id="message" placeholder="Write something from the heart..." maxlength="320"></textarea>
     </div>
 
+    <div class="field hp-field" aria-hidden="true">
+      <label for="website">Leave this field empty</label>
+      <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+    </div>
+
     <div class="names-row">
       <div class="field">
         <label for="fromName">From</label>
@@ -602,7 +616,7 @@
   <div class="success-icon">&#127800;</div>
   <div class="success-text" id="successText">Your bouquet is on its way.</div>
   <div class="success-sub" id="successSub"></div>
-  <button onclick="resetForm()" style="margin-top:24px;background:none;border:1.5px solid #1c2626;padding:12px 28px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:'DM Sans',sans-serif;">Send Another</button>
+  <button onclick="resetForm()" style="margin-top:24px;background:none;border:1.5px solid #1c2626;padding:12px 28px;font-size:12px;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer;font-family:var(--font-dm-sans),sans-serif;">Send Another</button>
 </div>
 
 <script>

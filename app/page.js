@@ -4,6 +4,8 @@ import BloomHomeClient from "./BloomHomeClient";
 
 const bloomHtmlPath = path.join(process.cwd(), "public", "bloom.html");
 const bloomHtml = fs.readFileSync(bloomHtmlPath, "utf8");
+const APP_NAME = "petalpost";
+const FORM_NAME = "letter";
 
 function extractPart(regex, label) {
   const match = bloomHtml.match(regex);
@@ -21,7 +23,9 @@ const sendBouquetOverride = `async function sendBouquet() {
   const from = document.getElementById('fromName').value.trim();
   const to = document.getElementById('toName').value.trim();
   const message = document.getElementById('message').value.trim();
+  const website = document.getElementById('website').value.trim();
   if (!from || !to) { alert('Please fill in your name and the recipient\\'s name.'); return; }
+  if (website) { return; }
 
   const bouquet = bouquets[currentIdx];
   const colors = bouquet.colorGroups.reduce((acc, group) => {
@@ -34,6 +38,9 @@ const sendBouquetOverride = `async function sendBouquet() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        app: '${APP_NAME}',
+        form: '${FORM_NAME}',
+        website,
         to,
         from,
         message,
@@ -45,7 +52,7 @@ const sendBouquetOverride = `async function sendBouquet() {
     if (!res.ok) throw new Error('Failed to create order');
 
     const data = await res.json();
-    if (!data || !data.id) throw new Error('Missing order id');
+    if (!data || !data.id) throw new Error('Missing preview id');
 
     window.location.href = '/preview/' + encodeURIComponent(data.id);
   } catch (err) {
