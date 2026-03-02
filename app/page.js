@@ -27,6 +27,13 @@ const sendBouquetOverride = `async function sendBouquet() {
   if (!from || !to) { alert('Please fill in your name and the recipient\\'s name.'); return; }
   if (petalpostConfirmCode) { return; }
 
+  const btn = document.getElementById('sendBouquetBtn');
+  if (btn) {
+    btn.disabled = true;
+    btn.classList.add('loading');
+    btn.innerHTML = 'Sending Bouquet...';
+  }
+
   const bouquet = bouquets[currentIdx];
   const colors = bouquet.colorGroups.reduce((acc, group) => {
     acc[group.key] = group.color;
@@ -64,7 +71,12 @@ const sendBouquetOverride = `async function sendBouquet() {
     window.location.href = '/bouquet/' + encodeURIComponent(data.id);
   } catch (err) {
     console.error(err);
-    alert('Could not send bouquet right now. Please try again.');
+    alert(err?.message || 'Could not send bouquet right now. Please try again.');
+    if (btn) {
+      btn.disabled = false;
+      btn.classList.remove('loading');
+      btn.innerHTML = 'Send Bouquet &rarr;';
+    }
   }
 }`;
 

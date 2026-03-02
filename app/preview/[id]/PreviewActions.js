@@ -1,5 +1,7 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+
 const DEFAULT_BACKGROUND = "#f9eef0";
 
 async function ensureHtml2Canvas() {
@@ -16,10 +18,29 @@ async function ensureHtml2Canvas() {
 }
 
 export default function PreviewActions() {
+  const [copied, setCopied] = useState(false);
+  const copiedTimerRef = useRef(null);
+
+  useEffect(() => {
+    return () => {
+      if (copiedTimerRef.current) {
+        window.clearTimeout(copiedTimerRef.current);
+      }
+    };
+  }, []);
+
   async function copyLink() {
     navigator.clipboard
       .writeText(window.location.href)
-      .then(() => alert("Link copied!"))
+      .then(() => {
+        setCopied(true);
+        if (copiedTimerRef.current) {
+          window.clearTimeout(copiedTimerRef.current);
+        }
+        copiedTimerRef.current = window.setTimeout(() => {
+          setCopied(false);
+        }, 2200);
+      })
       .catch(() => {});
   }
 
@@ -71,8 +92,8 @@ export default function PreviewActions() {
   return (
     <div className="actions-row">
       <div className="actions">
-        <button className="btn-ghost" onClick={() => window.history.back()}>
-          {"\u2190"} Back
+        <button className="btn-ghost" onClick={() => (window.location.href = "/")}>
+          {"\u2190"} Create another
         </button>
         <button className="btn" onClick={copyLink}>
           <svg
@@ -107,6 +128,10 @@ export default function PreviewActions() {
           </svg>
           Save
         </button>
+      </div>
+      <div className={`copy-toast${copied ? " show" : ""}`} aria-live="polite">
+        
+        <span className="copy-toast-text">Your FlowerNote is ready to share.</span>
       </div>
     </div>
   );

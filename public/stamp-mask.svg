@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 700" preserveAspectRatio="none">
+  <rect x="25" y="25" width="950" height="650" fill="#000"/>
+
+  <circle cx="25" cy="25" r="25" fill="#000"/>
+  <circle cx="75" cy="25" r="25" fill="#000"/>
+  <circle cx="125" cy="25" r="25" fill="#000"/>
+  <circle cx="175" cy="25" r="25" fill="#000"/>
+  <circle cx="225" cy="25" r="25" fill="#000"/>
+  <circle cx="275" cy="25" r="25" fill="#000"/>
+  <circle cx="325" cy="25" r="25" fill="#000"/>
+  <circle cx="375" cy="25" r="25" fill="#000"/>
+  <circle cx="425" cy="25" r="25" fill="#000"/>
+  <circle cx="475" cy="25" r="25" fill="#000"/>
+  <circle cx="525" cy="25" r="25" fill="#000"/>
+  <circle cx="575" cy="25" r="25" fill="#000"/>
+  <circle cx="625" cy="25" r="25" fill="#000"/>
+  <circle cx="675" cy="25" r="25" fill="#000"/>
+  <circle cx="725" cy="25" r="25" fill="#000"/>
+  <circle cx="775" cy="25" r="25" fill="#000"/>
+  <circle cx="825" cy="25" r="25" fill="#000"/>
+  <circle cx="875" cy="25" r="25" fill="#000"/>
+  <circle cx="925" cy="25" r="25" fill="#000"/>
+  <circle cx="975" cy="25" r="25" fill="#000"/>
+
+  <circle cx="975" cy="75" r="25" fill="#000"/>
+  <circle cx="975" cy="125" r="25" fill="#000"/>
+  <circle cx="975" cy="175" r="25" fill="#000"/>
+  <circle cx="975" cy="225" r="25" fill="#000"/>
+  <circle cx="975" cy="275" r="25" fill="#000"/>
+  <circle cx="975" cy="325" r="25" fill="#000"/>
+  <circle cx="975" cy="375" r="25" fill="#000"/>
+  <circle cx="975" cy="425" r="25" fill="#000"/>
+  <circle cx="975" cy="475" r="25" fill="#000"/>
+  <circle cx="975" cy="525" r="25" fill="#000"/>
+  <circle cx="975" cy="575" r="25" fill="#000"/>
+  <circle cx="975" cy="625" r="25" fill="#000"/>
+  <circle cx="975" cy="675" r="25" fill="#000"/>
+
+  <circle cx="925" cy="675" r="25" fill="#000"/>
+  <circle cx="875" cy="675" r="25" fill="#000"/>
+  <circle cx="825" cy="675" r="25" fill="#000"/>
+  <circle cx="775" cy="675" r="25" fill="#000"/>
+  <circle cx="725" cy="675" r="25" fill="#000"/>
+  <circle cx="675" cy="675" r="25" fill="#000"/>
+  <circle cx="625" cy="675" r="25" fill="#000"/>
+  <circle cx="575" cy="675" r="25" fill="#000"/>
+  <circle cx="525" cy="675" r="25" fill="#000"/>
+  <circle cx="475" cy="675" r="25" fill="#000"/>
+  <circle cx="425" cy="675" r="25" fill="#000"/>
+  <circle cx="375" cy="675" r="25" fill="#000"/>
+  <circle cx="325" cy="675" r="25" fill="#000"/>
+  <circle cx="275" cy="675" r="25" fill="#000"/>
+  <circle cx="225" cy="675" r="25" fill="#000"/>
+  <circle cx="175" cy="675" r="25" fill="#000"/>
+  <circle cx="125" cy="675" r="25" fill="#000"/>
+  <circle cx="75" cy="675" r="25" fill="#000"/>
+  <circle cx="25" cy="675" r="25" fill="#000"/>
+
+  <circle cx="25" cy="625" r="25" fill="#000"/>
+  <circle cx="25" cy="575" r="25" fill="#000"/>
+  <circle cx="25" cy="525" r="25" fill="#000"/>
+  <circle cx="25" cy="475" r="25" fill="#000"/>
+  <circle cx="25" cy="425" r="25" fill="#000"/>
+  <circle cx="25" cy="375" r="25" fill="#000"/>
+  <circle cx="25" cy="325" r="25" fill="#000"/>
+  <circle cx="25" cy="275" r="25" fill="#000"/>
+  <circle cx="25" cy="225" r="25" fill="#000"/>
+  <circle cx="25" cy="175" r="25" fill="#000"/>
+  <circle cx="25" cy="125" r="25" fill="#000"/>
+  <circle cx="25" cy="75" r="25" fill="#000"/>
+</svg>
