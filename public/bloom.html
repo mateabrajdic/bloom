@@ -119,6 +119,8 @@
     flex-shrink: 0;
     padding: 0;
     line-height: 1;
+    position: relative;
+    z-index: 3;
   }
 
   .slider-btn:hover {
@@ -136,16 +138,17 @@
     stroke-linejoin: round;
   }
 
-  /* The sliding viewport — NO overflow:hidden, use fade instead */
+  /* The sliding viewport */
   .bouquet-stage {
     width: 330px;
     height: 456px;
     flex-shrink: 0;
     position: relative;
     padding: 0 36px;
+    overflow: visible;
   }
 
-  /* Each slide is absolutely positioned, fades in/out */
+  /* Each slide is absolutely positioned */
   .bouquet-slide {
     position: absolute;
     top: 0; left: 0;
@@ -157,6 +160,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    will-change: opacity;
   }
 
   .bouquet-slide.active {
@@ -463,7 +467,16 @@
       padding: 0;
     }
 
-    .bouquet-stage { width: 260px; height: 380px; }
+    .bouquet-stage {
+      width: 260px;
+      height: 380px;
+      overflow: visible;
+    }
+
+    .bouquet-slide {
+      transition: transform 0.45s ease, opacity 0.45s ease;
+      will-change: transform, opacity;
+    }
   }
 
   .credit {
@@ -729,7 +742,13 @@ const RIBBON_PALETTE = [
 // ─── State ────────────────────────────────────────────────────────────────────
 let currentIdx = 0;
 let openPicker = null;
+let isSliding = false;
 const total = bouquets.length;
+const SLIDE_DURATION = 450;
+
+function isMobileCarousel() {
+  return window.matchMedia('(max-width: 700px)').matches;
+}
 
 // ─── Apply color ──────────────────────────────────────────────────────────────
 function applyColor(bouquetId, groupKey, color) {
@@ -870,14 +889,64 @@ document.addEventListener('click', e => {
   if (openPicker && !e.target.closest('.swatch-group')) closePicker();
 });
 
-// ─── Slider (endless / fade) ───────────────────────────────────────────────────
+// ─── Slider ────────────────────────────────────────────────────────────────────
 function slide(dir) {
   const slides = document.querySelectorAll('.bouquet-slide');
-  slides[currentIdx].classList.remove('active');
-  currentIdx = ((currentIdx + dir) % total + total) % total;
-  slides[currentIdx].classList.add('active');
+  if (isSliding) return;
+
+  const currentSlide = slides[currentIdx];
+  const nextIdx = ((currentIdx + dir) % total + total) % total;
+  const nextSlide = slides[nextIdx];
+  const useMobileAnimation = isMobileCarousel();
+
+  if (!useMobileAnimation) {
+    currentSlide.classList.remove('active');
+    currentIdx = nextIdx;
+    nextSlide.classList.add('active');
+    document.getElementById('bouquetName').textContent = 'Edit your ' + bouquets[currentIdx].name + ' colors';
+    buildPalette(currentIdx);
+    return;
+  }
+
+  isSliding = true;
+  const enterOffset = dir > 0 ? '175%' : '-175%';
+  const exitOffset = dir > 0 ? '-175%' : '175%';
+
+  currentSlide.style.transition = 'none';
+  currentSlide.style.transform = 'translateX(0)';
+  currentSlide.style.opacity = '1';
+
+  nextSlide.classList.add('active');
+  nextSlide.style.transition = 'none';
+  nextSlide.style.transform = 'translateX(' + enterOffset + ')';
+  nextSlide.style.opacity = '0';
+
+  void nextSlide.offsetWidth;
+
+  currentSlide.style.transition = 'transform 0.45s ease, opacity 0.45s ease';
+  nextSlide.style.transition = 'transform 0.45s ease, opacity 0.45s ease';
+
+  currentIdx = nextIdx;
   document.getElementById('bouquetName').textContent = 'Edit your ' + bouquets[currentIdx].name + ' colors';
   buildPalette(currentIdx);
+
+  requestAnimationFrame(() => {
+    currentSlide.style.transform = 'translateX(' + exitOffset + ')';
+    currentSlide.style.opacity = '0';
+    nextSlide.style.transform = 'translateX(0)';
+    nextSlide.style.opacity = '1';
+  });
+
+  window.setTimeout(() => {
+    currentSlide.classList.remove('active');
+    currentSlide.style.transition = '';
+    currentSlide.style.transform = '';
+    currentSlide.style.opacity = '';
+    nextSlide.style.transition = '';
+    nextSlide.style.transform = '';
+    nextSlide.style.opacity = '';
+    isSliding = false;
+  }, SLIDE_DURATION);
 }
 
 // ─── Touch swipe on bouquet ───────────────────────────────────────────────────
