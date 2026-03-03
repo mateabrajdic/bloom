@@ -83,7 +83,7 @@ export default function PreviewActions() {
     credit.style.flexDirection = "column";
     credit.style.alignItems = "center";
     credit.style.justifyContent = "center";
-    credit.style.gap = "4px";
+    credit.style.gap = "8px";
     credit.style.flex = "0 0 auto";
     credit.style.color = "#5a5a52";
     credit.style.textAlign = "center";
@@ -99,7 +99,7 @@ export default function PreviewActions() {
     const creditUrl = document.createElement("div");
     creditUrl.textContent = EXPORT_URL;
     creditUrl.style.fontFamily = '"DM Sans", sans-serif';
-    creditUrl.style.fontSize = "10px";
+    creditUrl.style.fontSize = "12px";
     creditUrl.style.fontWeight = "500";
     creditUrl.style.lineHeight = "0.14em";
     creditUrl.style.textTransform = "uppercase";
