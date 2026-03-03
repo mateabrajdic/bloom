@@ -19,6 +19,12 @@ async function ensureHtml2Canvas() {
   return window.html2canvas;
 }
 
+function canvasToBlob(canvas) {
+  return new Promise((resolve) => {
+    canvas.toBlob((blob) => resolve(blob), "image/png");
+  });
+}
+
 export default function PreviewActions() {
   const [copied, setCopied] = useState(false);
   const copiedTimerRef = useRef(null);
@@ -51,7 +57,20 @@ export default function PreviewActions() {
     const postcard = document.getElementById("postcard");
     if (!postcard) return;
     const isMobileExport = window.matchMedia("(max-width: 640px)").matches;
-    const exportWindow = isMobileExport ? window.open("", "_blank", "noopener,noreferrer") : null;
+    const exportWindow = isMobileExport ? window.open("about:blank", "_blank") : null;
+
+    if (isMobileExport && exportWindow) {
+      exportWindow.document.title = "FlowerNote Image";
+      exportWindow.document.body.style.margin = "0";
+      exportWindow.document.body.style.minHeight = "100vh";
+      exportWindow.document.body.style.display = "flex";
+      exportWindow.document.body.style.alignItems = "center";
+      exportWindow.document.body.style.justifyContent = "center";
+      exportWindow.document.body.style.background = DEFAULT_BACKGROUND;
+      exportWindow.document.body.style.fontFamily = '"DM Sans", sans-serif';
+      exportWindow.document.body.style.color = "#5a5a52";
+      exportWindow.document.body.textContent = "Preparing image...";
+    }
 
     const rect = postcard.getBoundingClientRect();
     const padding = isMobileExport ? 24 : 56;
@@ -182,13 +201,27 @@ export default function PreviewActions() {
       document.body.removeChild(exportFrame);
     }
 
-    const imageUrl = canvas.toDataURL("image/png");
-
     if (isMobileExport && exportWindow) {
-      exportWindow.location.replace(imageUrl);
+      const blob = await canvasToBlob(canvas);
+      if (!blob) {
+        exportWindow.close();
+        return;
+      }
+
+      const imageUrl = URL.createObjectURL(blob);
+      exportWindow.document.body.innerHTML = "";
+      const img = exportWindow.document.createElement("img");
+      img.src = imageUrl;
+      img.alt = "FlowerNote letter";
+      img.style.display = "block";
+      img.style.width = "100%";
+      img.style.height = "auto";
+      img.style.maxWidth = "100vw";
+      exportWindow.document.body.appendChild(img);
       return;
     }
 
+    const imageUrl = canvas.toDataURL("image/png");
     const link = document.createElement("a");
     link.download = "flowernote-letter.png";
     link.href = imageUrl;
