@@ -277,6 +277,7 @@
     flex-direction: column;
     gap: 8px;
     width: 196px;
+    max-width: calc(100vw - 20px);
   }
 
   .color-picker-wrap.open { display: flex; }
@@ -897,8 +898,24 @@ function togglePicker(pickerWrap, btn) {
   if (pickerWrap.classList.contains('open')) {
     closePicker();
   } else {
+    pickerWrap.style.left = '50%';
+    pickerWrap.style.right = 'auto';
+    pickerWrap.style.transform = 'translateX(-50%)';
     pickerWrap.classList.add('open');
     btn.classList.add('active');
+
+    const viewportPadding = 10;
+    const pickerRect = pickerWrap.getBoundingClientRect();
+
+    if (pickerRect.left < viewportPadding) {
+      pickerWrap.style.left = `${viewportPadding}px`;
+      pickerWrap.style.transform = 'translateX(0)';
+    } else if (pickerRect.right > window.innerWidth - viewportPadding) {
+      pickerWrap.style.left = 'auto';
+      pickerWrap.style.right = `${viewportPadding}px`;
+      pickerWrap.style.transform = 'translateX(0)';
+    }
+
     openPicker = pickerWrap;
   }
 }
@@ -908,6 +925,9 @@ function closePicker() {
   const btn = openPicker.previousSibling;
   if (btn) btn.classList.remove('active');
   openPicker.classList.remove('open');
+  openPicker.style.left = '50%';
+  openPicker.style.right = 'auto';
+  openPicker.style.transform = 'translateX(-50%)';
   openPicker = null;
 }
 
