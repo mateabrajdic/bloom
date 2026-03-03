@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 
 const DEFAULT_BACKGROUND = "#f9eef0";
+const EXPORT_CREDIT = "FlowerNote built by Matea from SunHouse Studio";
+const EXPORT_URL = "www.flowernote.online";
 
 async function ensureHtml2Canvas() {
   if (window.html2canvas) return window.html2canvas;
@@ -51,7 +53,10 @@ export default function PreviewActions() {
 
     const rect = postcard.getBoundingClientRect();
     const padding = 56;
-    const side = Math.ceil(Math.max(rect.width, rect.height) + padding * 2);
+    const creditHeight = 68;
+    const side = Math.ceil(
+      Math.max(rect.width + padding * 2, rect.height + padding * 2 + creditHeight),
+    );
     const exportFrame = document.createElement("div");
 
     exportFrame.style.position = "fixed";
@@ -60,15 +65,49 @@ export default function PreviewActions() {
     exportFrame.style.width = `${side}px`;
     exportFrame.style.height = `${side}px`;
     exportFrame.style.display = "flex";
+    exportFrame.style.flexDirection = "column";
     exportFrame.style.alignItems = "center";
     exportFrame.style.justifyContent = "center";
+    exportFrame.style.gap = "20px";
     exportFrame.style.background = DEFAULT_BACKGROUND;
     exportFrame.style.padding = `${padding}px`;
     exportFrame.style.boxSizing = "border-box";
 
     const postcardClone = postcard.cloneNode(true);
     postcardClone.removeAttribute("id");
+    postcardClone.style.flex = "0 0 auto";
     exportFrame.appendChild(postcardClone);
+
+    const credit = document.createElement("div");
+    credit.style.display = "flex";
+    credit.style.flexDirection = "column";
+    credit.style.alignItems = "center";
+    credit.style.justifyContent = "center";
+    credit.style.gap = "4px";
+    credit.style.flex = "0 0 auto";
+    credit.style.color = "#5a5a52";
+    credit.style.textAlign = "center";
+
+    const creditLine = document.createElement("div");
+    creditLine.textContent = EXPORT_CREDIT;
+    creditLine.style.fontFamily = '"DM Sans", sans-serif';
+    creditLine.style.fontSize = "10px";
+    creditLine.style.fontWeight = "500";
+    creditLine.style.letterSpacing = "0.14em";
+    creditLine.style.textTransform = "uppercase";
+
+    const creditUrl = document.createElement("div");
+    creditUrl.textContent = EXPORT_URL;
+    creditUrl.style.fontFamily = '"Cormorant Garamond", serif';
+    creditUrl.style.fontSize = "20px";
+    creditUrl.style.fontWeight = "400";
+    creditUrl.style.lineHeight = "1";
+    creditUrl.style.fontStyle = "italic";
+    creditUrl.style.color = "#1c2626";
+
+    credit.appendChild(creditLine);
+    credit.appendChild(creditUrl);
+    exportFrame.appendChild(credit);
     document.body.appendChild(exportFrame);
 
     let canvas;
