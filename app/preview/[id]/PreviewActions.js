@@ -50,6 +50,7 @@ export default function PreviewActions() {
     const html2canvas = await ensureHtml2Canvas();
     const postcard = document.getElementById("postcard");
     if (!postcard) return;
+    const isMobileExport = window.matchMedia("(max-width: 640px)").matches;
 
     const rect = postcard.getBoundingClientRect();
     const padding = 56;
@@ -75,7 +76,63 @@ export default function PreviewActions() {
 
     const postcardClone = postcard.cloneNode(true);
     postcardClone.removeAttribute("id");
+    postcardClone.querySelector(".letter-brand")?.remove();
+    postcardClone.querySelector(".postcard-credit")?.remove();
     postcardClone.style.flex = "0 0 auto";
+
+    if (isMobileExport) {
+      postcardClone.style.width = "360px";
+      postcardClone.style.maxWidth = "100%";
+      postcardClone.style.minHeight = "auto";
+      postcardClone.style.paddingBottom = "34px";
+
+      const bouquetCard = postcardClone.querySelector(".postcard-bouquet");
+      if (bouquetCard) {
+        bouquetCard.style.minHeight = "350px";
+        bouquetCard.style.height = "350px";
+        bouquetCard.style.padding = "24px 22px 0";
+        bouquetCard.style.background = "transparent";
+        bouquetCard.style.border = "none";
+        bouquetCard.style.boxShadow = "none";
+        bouquetCard.style.alignItems = "center";
+        bouquetCard.style.justifyContent = "flex-start";
+      }
+
+      const bouquetStamp = postcardClone.querySelector(".bouquet-stamp");
+      if (bouquetStamp) {
+        bouquetStamp.style.width = "100%";
+        bouquetStamp.style.height = "100%";
+      }
+
+      const bouquetSvg = postcardClone.querySelector(".bouquet-svg");
+      if (bouquetSvg) {
+        bouquetSvg.style.width = "100%";
+        bouquetSvg.style.height = "100%";
+      }
+
+      const bouquetSvgInner = postcardClone.querySelector(".bouquet-svg svg");
+      if (bouquetSvgInner) {
+        bouquetSvgInner.style.width = "auto";
+        bouquetSvgInner.style.height = "100%";
+        bouquetSvgInner.style.maxWidth = "100%";
+        bouquetSvgInner.style.maxHeight = "100%";
+      }
+
+      const letterCard = postcardClone.querySelector(".postcard-letter");
+      if (letterCard) {
+        letterCard.style.position = "relative";
+        letterCard.style.top = "auto";
+        letterCard.style.left = "auto";
+        letterCard.style.right = "auto";
+        letterCard.style.width = "calc(100% - 22px)";
+        letterCard.style.minHeight = "auto";
+        letterCard.style.margin = "-34px 0 0 auto";
+        letterCard.style.padding = "32px 28px 28px";
+        letterCard.style.transform = "rotate(-1.25deg)";
+        letterCard.style.backgroundPosition = "0 0";
+      }
+    }
+
     exportFrame.appendChild(postcardClone);
 
     const credit = document.createElement("div");
