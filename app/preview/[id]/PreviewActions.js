@@ -185,35 +185,7 @@ export default function PreviewActions() {
     const imageUrl = canvas.toDataURL("image/png");
 
     if (isMobileExport && exportWindow) {
-      exportWindow.document.write(`
-        <!doctype html>
-        <html>
-          <head>
-            <meta name="viewport" content="width=device-width, initial-scale=1" />
-            <title>FlowerNote Image</title>
-            <style>
-              body {
-                margin: 0;
-                min-height: 100vh;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: ${DEFAULT_BACKGROUND};
-              }
-              img {
-                display: block;
-                width: 100%;
-                height: auto;
-                max-width: 100vw;
-              }
-            </style>
-          </head>
-          <body>
-            <img src="${imageUrl}" alt="FlowerNote letter" />
-          </body>
-        </html>
-      `);
-      exportWindow.document.close();
+      exportWindow.location.replace(imageUrl);
       return;
     }
 
