@@ -51,11 +51,12 @@ export default function PreviewActions() {
     const postcard = document.getElementById("postcard");
     if (!postcard) return;
     const isMobileExport = window.matchMedia("(max-width: 640px)").matches;
+    const exportWindow = isMobileExport ? window.open("", "_blank", "noopener,noreferrer") : null;
 
     const rect = postcard.getBoundingClientRect();
-    const padding = 56;
-    const creditHeight = 68;
-    const side = Math.ceil(
+    const padding = isMobileExport ? 24 : 56;
+    const creditHeight = isMobileExport ? 56 : 68;
+    const exportWidth = isMobileExport ? 408 : Math.ceil(
       Math.max(rect.width + padding * 2, rect.height + padding * 2 + creditHeight),
     );
     const exportFrame = document.createElement("div");
@@ -63,12 +64,11 @@ export default function PreviewActions() {
     exportFrame.style.position = "fixed";
     exportFrame.style.left = "-99999px";
     exportFrame.style.top = "0";
-    exportFrame.style.width = `${side}px`;
-    exportFrame.style.height = `${side}px`;
+    exportFrame.style.width = `${exportWidth}px`;
     exportFrame.style.display = "flex";
     exportFrame.style.flexDirection = "column";
     exportFrame.style.alignItems = "center";
-    exportFrame.style.justifyContent = "center";
+    exportFrame.style.justifyContent = "flex-start";
     exportFrame.style.gap = "20px";
     exportFrame.style.background = DEFAULT_BACKGROUND;
     exportFrame.style.padding = `${padding}px`;
@@ -166,6 +166,9 @@ export default function PreviewActions() {
     credit.appendChild(creditUrl);
     exportFrame.appendChild(credit);
     document.body.appendChild(exportFrame);
+    exportFrame.style.height = isMobileExport
+      ? `${Math.ceil(postcardClone.getBoundingClientRect().height + credit.getBoundingClientRect().height + padding * 2 + 20)}px`
+      : `${exportWidth}px`;
 
     let canvas;
     try {
@@ -179,9 +182,44 @@ export default function PreviewActions() {
       document.body.removeChild(exportFrame);
     }
 
+    const imageUrl = canvas.toDataURL("image/png");
+
+    if (isMobileExport && exportWindow) {
+      exportWindow.document.write(`
+        <!doctype html>
+        <html>
+          <head>
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+            <title>FlowerNote Image</title>
+            <style>
+              body {
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: ${DEFAULT_BACKGROUND};
+              }
+              img {
+                display: block;
+                width: 100%;
+                height: auto;
+                max-width: 100vw;
+              }
+            </style>
+          </head>
+          <body>
+            <img src="${imageUrl}" alt="FlowerNote letter" />
+          </body>
+        </html>
+      `);
+      exportWindow.document.close();
+      return;
+    }
+
     const link = document.createElement("a");
     link.download = "flowernote-letter.png";
-    link.href = canvas.toDataURL("image/png");
+    link.href = imageUrl;
     link.click();
   }
 
