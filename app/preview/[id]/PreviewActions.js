@@ -98,8 +98,8 @@ export default function PreviewActions() {
 
     const creditUrl = document.createElement("div");
     creditUrl.textContent = EXPORT_URL;
-    creditUrl.style.fontFamily = '"Cormorant Garamond", serif';
-    creditUrl.style.fontSize = "20px";
+    creditUrl.style.fontFamily = '"DM Sans", sans-serif';
+    creditUrl.style.fontSize = "16px";
     creditUrl.style.fontWeight = "400";
     creditUrl.style.lineHeight = "1";
     creditUrl.style.fontStyle = "italic";
