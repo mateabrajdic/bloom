@@ -99,11 +99,10 @@ export default function PreviewActions() {
     const creditUrl = document.createElement("div");
     creditUrl.textContent = EXPORT_URL;
     creditUrl.style.fontFamily = '"DM Sans", sans-serif';
-    creditUrl.style.fontSize = "16px";
-    creditUrl.style.fontWeight = "400";
-    creditUrl.style.lineHeight = "1";
-    creditUrl.style.fontStyle = "italic";
-    creditUrl.style.color = "#1c2626";
+    creditUrl.style.fontSize = "10px";
+    creditUrl.style.fontWeight = "500";
+    creditUrl.style.lineHeight = "0.14em";
+    creditUrl.style.textTransform = "uppercase";
 
     credit.appendChild(creditLine);
     credit.appendChild(creditUrl);
