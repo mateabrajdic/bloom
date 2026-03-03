@@ -57,7 +57,6 @@ const extraPreviewStyles = `
   }
 
   .actions-row {
-    position: relative;
     display: flex;
     flex-wrap: wrap;
     gap: 16px;
@@ -66,29 +65,30 @@ const extraPreviewStyles = `
   }
 
   .copy-toast {
-    position: absolute;
-    top: calc(100%);
+    position: fixed;
+    top: 50%;
     left: 50%;
-    transform: translateX(-50%) translateY(-6px);
-    min-width: 400px;
-    padding: 14px 16px;
+    transform: translate(-50%, calc(-50% - 6px));
+    width: min(420px, calc(100vw - 32px));
+    padding: 18px 20px;
     display: flex;
-    text-align:center;
+    align-items: center;
+    text-align: center;
     flex-direction: column;
-    gap: 3px;
-    /* border: 1px solid rgba(90, 90, 82, 0.12);
+    gap: 8px;
+    border: 1px solid rgba(90, 90, 82, 0.12);
     background: rgba(250, 247, 240, 0.98);
-    box-shadow: 0 14px 28px rgba(28, 38, 38, 0.08); */ 
+    box-shadow: 0 14px 28px rgba(28, 38, 38, 0.08);
     color: var(--dark);
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.18s ease, transform 0.18s ease;
-    z-index: 20;
+    z-index: 400;
   }
 
   .copy-toast.show {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translate(-50%, -50%);
   }
 
   .copy-toast-title {
@@ -99,9 +99,9 @@ const extraPreviewStyles = `
   }
 
   .copy-toast-text {
-    font-family: var(--font-cormorant-garamond), serif;
+    font-family: var(--font-dm-sans), sans-serif;
     font-size: 16px;
-    line-height: 1.1;
+    line-height: 1.35;
   }
 
   .postcard-stage {
@@ -276,9 +276,12 @@ const extraPreviewStyles = `
     }
 
     .copy-toast {
-      min-width: min(400px, calc(100vw - 48px));
-      top: calc(100%);
-      text-align: center;
+      width: min(320px, calc(100vw - 24px));
+      padding: 16px 18px;
+    }
+
+    .copy-toast-text {
+      font-size: 15px;
     }
 
     .postcard-stage {

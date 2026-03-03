@@ -99,9 +99,10 @@ export default function PreviewActions() {
     const creditUrl = document.createElement("div");
     creditUrl.textContent = EXPORT_URL;
     creditUrl.style.fontFamily = '"DM Sans", sans-serif';
-    creditUrl.style.fontSize = "12px";
+    creditUrl.style.fontSize = "10px";
     creditUrl.style.fontWeight = "500";
-    creditUrl.style.lineHeight = "0.14em";
+    creditUrl.style.letterSpacing = "0.14em";
+    creditUrl.style.lineHeight = "1";
     creditUrl.style.textTransform = "uppercase";
 
     credit.appendChild(creditLine);
@@ -168,8 +169,8 @@ export default function PreviewActions() {
         </button>
       </div>
       <div className={`copy-toast${copied ? " show" : ""}`} aria-live="polite">
-        
-        <span className="copy-toast-text">Copied! Your FlowerNote is ready to share.</span>
+        <span className="copy-toast-title">Link copied</span>
+        <span className="copy-toast-text">Paste anywhere to share.</span>
       </div>
     </div>
   );
