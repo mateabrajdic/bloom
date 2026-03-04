@@ -198,17 +198,15 @@ const extraPreviewStyles = `
     transform-origin: top center;
   }
 
-  .postcard-letter::before {
-    content: "";
+  .paperclip {
     position: absolute;
-    top: -28px;
+    top: -33px;
     right: 34px;
-    width: 26px;
-    height: 86px;
-    border: 3px solid rgba(132, 133, 136, 0.95);
-    border-radius: 16px;
-    background: transparent;
+    width: 25px;
+    height: auto;
+    display: block;
     pointer-events: none;
+    user-select: none;
   }
 
   .postcard-credit {
@@ -353,12 +351,10 @@ const extraPreviewStyles = `
       z-index: 2;
     }
 
-    .postcard-letter::before {
-      top: 18px;
-      right: 18px;
-      width: 22px;
-      height: 74px;
-      border-radius: 14px;
+    .paperclip {
+      top: -20px;
+      right: 3px;
+      width: 28px;
       transform: rotate(90deg);
       transform-origin: center center;
     }
@@ -461,6 +457,7 @@ export default async function PreviewPage({ params }) {
               </div>
 
               <div className="postcard-letter">
+                <img className="paperclip" src="/paperclip.png" alt="" aria-hidden="true" />
                 <div className="letter-body">
                   <div className="letter-to">For {order.to}</div>
                   <div className="letter-message">{safeMessage}</div>
