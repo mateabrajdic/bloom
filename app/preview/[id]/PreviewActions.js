@@ -27,12 +27,17 @@ function canvasToBlob(canvas) {
 
 export default function PreviewActions() {
   const [copied, setCopied] = useState(false);
+  const [saving, setSaving] = useState(false);
   const copiedTimerRef = useRef(null);
+  const savingTimerRef = useRef(null);
 
   useEffect(() => {
     return () => {
       if (copiedTimerRef.current) {
         window.clearTimeout(copiedTimerRef.current);
+      }
+      if (savingTimerRef.current) {
+        window.clearTimeout(savingTimerRef.current);
       }
     };
   }, []);
@@ -57,19 +62,33 @@ export default function PreviewActions() {
     const postcard = document.getElementById("postcard");
     if (!postcard) return;
     const isMobileExport = window.matchMedia("(max-width: 640px)").matches;
+    const SAVE_TOAST_DURATION = 2400;
     const exportWindow = isMobileExport ? window.open("about:blank", "_blank") : null;
+
+    setSaving(true);
+    if (savingTimerRef.current) {
+      window.clearTimeout(savingTimerRef.current);
+    }
+    savingTimerRef.current = window.setTimeout(() => {
+      setSaving(false);
+    }, SAVE_TOAST_DURATION);
 
     if (isMobileExport && exportWindow) {
       exportWindow.document.title = "FlowerNote Image";
       exportWindow.document.body.style.margin = "0";
       exportWindow.document.body.style.minHeight = "100vh";
       exportWindow.document.body.style.display = "flex";
+      exportWindow.document.body.style.flexDirection = "column";
       exportWindow.document.body.style.alignItems = "center";
       exportWindow.document.body.style.justifyContent = "center";
       exportWindow.document.body.style.background = DEFAULT_BACKGROUND;
       exportWindow.document.body.style.fontFamily = '"DM Sans", sans-serif';
       exportWindow.document.body.style.color = "#5a5a52";
-      exportWindow.document.body.textContent = "Preparing image...";
+      exportWindow.document.body.style.padding = "32px";
+      exportWindow.document.body.style.boxSizing = "border-box";
+      exportWindow.document.body.style.textAlign = "center";
+      exportWindow.document.body.innerHTML =
+        "<div>Preparing image...</div><div>When it loads, long press to save to gallery.</div>";
     }
 
     const rect = postcard.getBoundingClientRect();
@@ -208,6 +227,10 @@ export default function PreviewActions() {
         return;
       }
 
+      await new Promise((resolve) => {
+        window.setTimeout(resolve, SAVE_TOAST_DURATION);
+      });
+
       const imageUrl = URL.createObjectURL(blob);
       exportWindow.document.body.innerHTML = "";
       const img = exportWindow.document.createElement("img");
@@ -271,6 +294,10 @@ export default function PreviewActions() {
       <div className={`copy-toast${copied ? " show" : ""}`} aria-live="polite">
         <span className="copy-toast-title">Link copied</span>
         <span className="copy-toast-text">Paste anywhere to share.</span>
+      </div>
+      <div className={`copy-toast${saving ? " show" : ""}`} aria-live="polite">
+        <span className="copy-toast-title">Generating image</span>
+        <span className="copy-toast-text">A new tab will open. Long press the image to save it.</span>
       </div>
     </div>
   );
