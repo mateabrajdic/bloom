@@ -41,7 +41,7 @@ const sendBouquetOverride = `async function sendBouquet() {
   }, {});
 
   try {
-    const res = await fetch('/api/orders', {
+    const res = await fetch('/api/bouquets', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -62,7 +62,7 @@ const sendBouquetOverride = `async function sendBouquet() {
     } catch {}
 
     if (!res.ok) {
-      throw new Error(responseData?.error || 'Failed to create order');
+      throw new Error(responseData?.error || 'Failed to create bouquet');
     }
 
     const data = responseData;

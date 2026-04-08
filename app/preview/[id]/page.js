@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { notFound } from "next/navigation";
-import { getOrderById } from "../../../lib/orders-store";
+import { getBouquetById } from "../../../lib/bouquets-store";
 import {
   getBouquetSvgMarkup,
   MAX_MESSAGE_LENGTH,
@@ -378,10 +378,10 @@ function estimateDesktopMessageLines(message) {
 export async function generateMetadata({ params }) {
   const resolvedParams = await Promise.resolve(params);
   const id = resolvedParams?.id;
-  const order = await getOrderById(id);
+  const bouquet = await getBouquetById(id);
   const staticOgImage = "/petalpost-og.png";
 
-  if (!order) {
+  if (!bouquet) {
     return {
       title: "Petalpost Preview",
       description: "A bouquet and letter preview from FlowerNote.",
@@ -395,10 +395,10 @@ export async function generateMetadata({ params }) {
     };
   }
 
-  const previewTitle = `A bouquet for ${order.to}`;
+  const previewTitle = `A bouquet for ${bouquet.to}`;
   const previewDescription =
-    String(order.message || "").trim().slice(0, 140) ||
-    `A bouquet and note from ${order.from}.`;
+    String(bouquet.message || "").trim().slice(0, 140) ||
+    `A bouquet and note from ${bouquet.from}.`;
 
   return {
     title: previewTitle,
@@ -422,12 +422,12 @@ export default async function PreviewPage({ params }) {
   const id = resolvedParams?.id;
   if (!id) notFound();
 
-  const order = await getOrderById(id);
-  if (!order) notFound();
+  const bouquet = await getBouquetById(id);
+  if (!bouquet) notFound();
 
-  const bouquetId = normalizeBouquetId(order.bouquet_id);
-  const bouquetSvg = getBouquetSvgMarkup(bouquetId, order.colors);
-  const safeMessage = String(order.message || "").slice(0, MAX_MESSAGE_LENGTH);
+  const bouquetId = normalizeBouquetId(bouquet.bouquet_id);
+  const bouquetSvg = getBouquetSvgMarkup(bouquetId, bouquet.colors);
+  const safeMessage = String(bouquet.message || "").slice(0, MAX_MESSAGE_LENGTH);
   const estimatedLines = estimateDesktopMessageLines(safeMessage);
   const extraLines = Math.max(0, estimatedLines - 8);
   const extraHeight = extraLines * 38;
@@ -459,13 +459,13 @@ export default async function PreviewPage({ params }) {
               <div className="postcard-letter">
                 <img className="paperclip" src="/paperclip.png" alt="" aria-hidden="true" />
                 <div className="letter-body">
-                  <div className="letter-to">For {order.to}</div>
+                  <div className="letter-to">For {bouquet.to}</div>
                   <div className="letter-message">{safeMessage}</div>
                 </div>
 
                 <div className="letter-footer">
                   <div className="letter-from">
-                    <span>With love, {order.from}</span>
+                    <span>With love, {bouquet.from}</span>
                   </div>
                 </div>
               </div>

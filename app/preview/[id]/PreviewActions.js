@@ -88,7 +88,7 @@ export default function PreviewActions() {
       exportWindow.document.body.style.boxSizing = "border-box";
       exportWindow.document.body.style.textAlign = "center";
       exportWindow.document.body.innerHTML =
-        "<div>Preparing image...</div><div>When it loads, long press to save to gallery.</div>";
+        "<div style=\"font-size:24px;line-height:1.2;font-weight:500;letter-spacing:0.01em;\">Preparing image...</div><div style=\"margin-top:14px;font-size:17px;line-height:1.45;max-width:260px;\">When it loads, long press to save to gallery.</div>";
     }
 
     const rect = postcard.getBoundingClientRect();

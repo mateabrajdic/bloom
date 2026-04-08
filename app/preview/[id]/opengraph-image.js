@@ -1,5 +1,5 @@
 import { ImageResponse } from "next/og";
-import { getOrderById } from "../../../lib/orders-store";
+import { getBouquetById } from "../../../lib/bouquets-store";
 import {
   buildBouquetSvgDataUri,
   MAX_MESSAGE_LENGTH,
@@ -55,13 +55,13 @@ function buildPreviewLines(message, maxLines = 4, maxCharsPerLine = 42) {
 export default async function OpenGraphImage({ params }) {
   const resolvedParams = await Promise.resolve(params);
   const id = resolvedParams?.id;
-  const order = await getOrderById(id);
+  const bouquet = await getBouquetById(id);
 
-  const to = order?.to || "Friend";
-  const from = order?.from || "Someone";
-  const bouquetId = normalizeBouquetId(order?.bouquet_id);
-  const bouquetSrc = buildBouquetSvgDataUri(bouquetId, order?.colors);
-  const messageLines = buildPreviewLines(order?.message);
+  const to = bouquet?.to || "Friend";
+  const from = bouquet?.from || "Someone";
+  const bouquetId = normalizeBouquetId(bouquet?.bouquet_id);
+  const bouquetSrc = buildBouquetSvgDataUri(bouquetId, bouquet?.colors);
+  const messageLines = buildPreviewLines(bouquet?.message);
 
   return new ImageResponse(
     (
